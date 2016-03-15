@@ -1,0 +1,46 @@
+package mimickit.model;
+
+/**
+ * This class holds the contants related to spikes.
+ * 
+ * @author Önder Gürcan <onder.gurcan@gmail.com>
+ * 
+ */
+public class Spike {
+
+	/**
+	 * The initial synaptic potential in ms. The initial synaptic potential is
+	 * the most confident synaptic potential value.
+	 */
+	public static final double INITIAL_SYNAPTIC_POTENTIAL = 0.20;
+	
+	/**
+	 * The axonal delay for interneurons in ms.
+	 */
+	public static final double INTERNEURONAL_AXONAL_DELAY = 0.5;
+
+	/**
+	 * The peak potential in mV.
+	 */
+	public static final double PEAK_POTENTIAL = 30.0;
+
+	/**
+	 * The firing threshold in mV.
+	 */
+	public static final double FIRING_THRESHOLD = -45.0;
+	
+	/**
+	 * The "after hyper-polarization" (AHP) level for resting neurons in mV.
+	 */
+//	public static final double RESTING_AHP_LEVEL = 25.0;
+	
+	/**
+	 * The "after hyper-polarization" (AHP) level for running neurons in mV.
+	 */
+	public static final double RUNNING_AHP_LEVEL = 10.0;
+
+	/**
+	 * The duration of a spike in ms.
+	 */
+	public static final double SPIKE_DURATION = 4.0;	
+}

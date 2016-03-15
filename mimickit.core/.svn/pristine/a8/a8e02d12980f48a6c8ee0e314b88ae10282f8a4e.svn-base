@@ -1,0 +1,116 @@
+package soeasy.model.neuron;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import soeasy.amas.Action;
+import soeasy.amas.CooperativeAgent;
+import soeasy.amas.Feedback;
+import soeasy.model.FDepolarization;
+import soeasy.model.FInstantFrequency;
+
+public class ACHandleFInstantFrequency4RunningNeuron extends Action {
+
+	private RunningNeuron owner;
+
+	private Feedback fInstantFrequency;
+
+	public ACHandleFInstantFrequency4RunningNeuron(CooperativeAgent ownerAgent) {
+		super(ownerAgent);
+	}
+
+	@Override
+	public void execute() {
+		owner = (RunningNeuron) getOwnerAgent();
+		fInstantFrequency = getReceivedFeedback().getFeedback();
+
+		handleAccordingToTheLatency();
+	}
+
+	private void handleAccordingToTheLatency() {
+		if (fInstantFrequency.isGood()) {
+			Feedback fDepGood = new FDepolarization(owner, Feedback.GOOD);
+			owner.sendFeedback(owner.getFriends(0.49, 4.51), fDepGood);
+		} else {
+			// get temporarily closest neurons
+			List<Neuron> correlatedContriburinglosestNeurons = owner.getFriends(0.49, 0.51);
+			if (!correlatedContriburinglosestNeurons.isEmpty()) {
+				if (owner.getKriticality() > 3) { // it is not noise... or
+													// reliable feedback
+					Feedback fDepolarization = new FDepolarization(owner,
+							fInstantFrequency.getType());
+					owner.sendFeedback(correlatedContriburinglosestNeurons, fDepolarization);
+
+//					Feedback fTemporallyClosestNeuron = new FInstantFrequency(
+//							owner, Feedback.GOOD);
+//					owner.sendFeedback(owner.getFriends(),
+//							fTemporallyClosestNeuron);
+				} // if
+			} else {
+				forwardFrequencyFeedback();
+			} // if
+		} // if
+	}
+
+	/**
+	 * Forwards the frequency feedback received from WiringViewer to the closest
+	 * friend neuron.
+	 */
+	private void forwardFrequencyFeedback() {
+		List<Neuron> preNeurons = owner.getLastActiveFriendNeurons();
+		if (!preNeurons.isEmpty()) {
+			// change the source of the feedback without details
+			Feedback frequencyFeedback = new FInstantFrequency(owner,
+					Feedback.INCREASE); // fInstantFrequency.getType());
+			//
+			sortByLastSpikeTime(preNeurons);
+			// filter inhibitory synapses
+			preNeurons = getExcitatoryNeurons(preNeurons);
+
+			if (preNeurons.size() > 0) {
+				Neuron neuron = preNeurons.get(0);
+				owner.sendFeedback(neuron, frequencyFeedback);
+
+				if (neuron.getIdentifier().equals("InterNeuron0")) {
+					System.out.println(owner + " spiked at "
+							+ owner.getLastSpikeTime() + " and " + neuron
+							+ " spiked at " + neuron.getLastSpikeTime());
+				}
+			} else {
+				System.out.println("No Friend to Forward Frequency Feedback");
+			}
+		}
+	}
+
+	private List<Neuron> getExcitatoryNeurons(List<Neuron> neurons) {
+		List<Neuron> excitatoryNeurons = new ArrayList<Neuron>();
+		Iterator<Neuron> iterator = neurons.iterator();
+		while (iterator.hasNext()) {
+			Neuron neuron = iterator.next();
+			if (neuron.isExcitatory()) {
+				excitatoryNeurons.add(neuron);
+			}
+		}
+		return excitatoryNeurons;
+	}
+
+	private void sortByLastSpikeTime(List<Neuron> neurons) {
+		Collections.sort(neurons, new Comparator<Neuron>() {
+			@Override
+			public int compare(Neuron neuron1, Neuron neuron2) {
+				int result = 0;
+				double lastSpikeTime1 = neuron1.getLastSpikeTime();
+				double lastSpikeTime2 = neuron2.getLastSpikeTime();
+				if (lastSpikeTime1 < lastSpikeTime2) {
+					result = Integer.MAX_VALUE;
+				} else if (lastSpikeTime2 < lastSpikeTime1) {
+					result = Integer.MIN_VALUE;
+				}
+				return result;
+			}
+		});
+	}
+}

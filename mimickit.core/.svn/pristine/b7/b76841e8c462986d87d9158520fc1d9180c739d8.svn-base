@@ -1,0 +1,42 @@
+package soeasy.amas;
+
+import repast.simphony.engine.schedule.IAction;
+
+public class ActionToBeScheduled {
+	
+	private double start;
+	private double interval;
+	private double priority;
+	private double duration;
+	private IAction action;
+
+	public ActionToBeScheduled(double start, double interval, double priority,
+			double duration, IAction action) {
+		this.start = start;
+		this.interval = interval;
+		this.priority = priority;
+		this.duration = duration;
+		this.action = action;
+	}
+
+	public double getStart() {
+		return start;
+	}
+
+	public double getInterval() {
+		return interval;
+	}
+
+	public double getPriority() {
+		return priority;
+	}
+
+	public double getDuration() {
+		return duration;
+	}
+
+	public IAction getAction() {
+		return action;
+	}
+
+}

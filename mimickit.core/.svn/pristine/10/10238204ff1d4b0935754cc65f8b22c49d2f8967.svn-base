@@ -1,0 +1,11 @@
+package soeasy.scenario.singlemotorunit;
+
+import soeasy.scenario.AbstractScenarioExecuter;
+
+public class ScenarioExecuter extends AbstractScenarioExecuter {
+
+	@Override
+	public void runTest() throws Exception {
+		executeTestScenario(1510000001);
+	}
+}

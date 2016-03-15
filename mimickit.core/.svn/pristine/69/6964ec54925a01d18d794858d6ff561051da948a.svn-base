@@ -1,0 +1,12 @@
+package soeasy.model;
+
+import soeasy.amas.CooperativeAgent;
+import soeasy.amas.Feedback;
+
+public class FInstantFrequency extends Feedback {
+
+	public FInstantFrequency(CooperativeAgent source, String feedbackType) {
+		super(source, feedbackType);
+	}
+
+}
