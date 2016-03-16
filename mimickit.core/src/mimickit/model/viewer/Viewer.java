@@ -1,0 +1,140 @@
+package mimickit.model.viewer;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
+
+import mimickit.amas.CooperativeAgent;
+import mimickit.amas.Feedback;
+import mimickit.model.SOEASYEnvironment;
+import mimickit.model.SOEASYParameters;
+import mimickit.model.neuron.Neuron;
+import mimickit.model.neuron.RunningNeuron;
+import mimickit.model.neuron.SpikeObserver;
+import mimickit.util.PeriStimulusTimeHistogram;
+import mimickit.util.StaticPSF;
+import repast.simphony.engine.schedule.ScheduleParameters;
+
+/**
+ * Wiring viewer agent calibrates and controls the wiring of interneuron agents
+ * using whole experimental data obtained, global parameters and
+ * characteristics. Furthermore, this agent also determine when to stop
+ * simulation runs.
+ * 
+ * @author Önder Gürcan <onder.gurcan@gmail.com>
+ * 
+ */
+public class Viewer extends CooperativeAgent implements SpikeObserver {
+
+	private RunningNeuron motorNeuron;
+
+	private Neuron muscle;
+
+	private HashMap<Double, Feedback> lastOutgoingFeedbacksByLatency;
+
+	public Viewer(RunningNeuron motorNeuron, Neuron muscle,
+			PeriStimulusTimeHistogram referencePSTH) {
+		super(null, null);
+		//
+		this.motorNeuron = motorNeuron;
+		this.muscle = muscle;
+		if (muscle != null)
+			this.muscle.addSpikeObserver(this);
+
+		// set reference data
+		StaticPSF referencePSF = SOEASYEnvironment.getInstance().getDataSet()
+				.getReferencePSF();
+		if (referencePSF == null) {
+			throw new IllegalArgumentException("Reference PSF cannot be null!");
+		}
+	}
+
+	/**
+	 * If no referencePSF is given, use the reference PSF from parameters.
+	 * 
+	 * @param motorNeuron
+	 * @param muscle
+	 */
+	public Viewer(RunningNeuron motorNeuron, Neuron muscle) {
+		this(motorNeuron, muscle, new PeriStimulusTimeHistogram(
+				SOEASYEnvironment.getInstance().getDataSet()
+						.getReferenceTriggerDataFile(), SOEASYEnvironment
+						.getInstance().getDataSet()
+						.getReferenceMNDischargeDataFile()));
+	}
+
+	public HashMap<Double, Feedback> getLastOutgoingFeedbacksByLatency() {
+		if (lastOutgoingFeedbacksByLatency == null) {
+			lastOutgoingFeedbacksByLatency = new HashMap<Double, Feedback>();
+		}
+		return lastOutgoingFeedbacksByLatency;
+	}
+
+	@Override
+	protected void defineActions() {
+		//
+	}
+
+	protected Neuron getMotorNeuron() {
+		return motorNeuron;
+	}			
+
+//	@Override
+//	public double getCriticality() {
+//		return 100.1;
+//	}
+	
+	@Override
+	public double getKriticality() {
+		return 0.1;
+	}
+
+	@Override
+	protected List<CooperativeAgent> getNeighbourAgents() {
+		return new Vector<CooperativeAgent>();
+	}
+
+	@Override
+	protected List<? extends CooperativeAgent> getInputAgents() {
+		return new Vector<CooperativeAgent>();
+	}
+
+	@Override
+	public String toString() {
+		return "WiringViewer";
+	}
+
+	@Override
+	public void update(Neuron spikingNeuron, double spikeTime) {
+		// if this viewer agent is not blind!
+		SOEASYEnvironment environment = SOEASYEnvironment.getInstance();
+		if (!environment.getExtracellularFluid().isCharged()) {
+			environment.getDataSet().addSimulatedMNDischarge(spikeTime);
+			//mnDischarges.add(spikeTime);
+
+			// try to detect instant frequency ncs
+			SOEASYParameters.schedule(
+					ScheduleParameters.createOneTime(spikeTime + 1, 1, 0),
+					new ACCheckInstantFrequency(this));
+		}
+	}
+
+	@Override
+	protected boolean isBackwardPropagated(CooperativeAgent senderAgent) {
+		return false;
+	}
+
+	@Override
+	public boolean sendFeedback(CooperativeAgent receiverAgent,
+			Feedback feedback) {
+		boolean isSent = false;
+		if (receiverAgent != null) {
+			isSent = receiverAgent.receiveFeedback(feedback, this);
+			if (isSent) {
+				feedback.addSender(this);
+			}
+		}
+		return isSent;
+	}	
+
+}

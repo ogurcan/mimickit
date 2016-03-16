@@ -1,0 +1,19 @@
+package mimickit.plot;
+
+import mimickit.util.CuSum;
+
+/**
+ * Generates and plots spike histogram of experimental data.
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class PSTHCUSUMExperimental {
+
+	public static void main(String[] args) {
+		CuSum cuSum = new CuSum();
+		cuSum.readFile("./data/test/cusum_experimental.txt");
+		//cuSum.getYChart().view(800, 500);		
+		cuSum.getXYChart().view(800, 500);
+	}
+}

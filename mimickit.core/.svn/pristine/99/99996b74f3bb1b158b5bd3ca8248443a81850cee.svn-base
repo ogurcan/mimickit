@@ -1,0 +1,42 @@
+package soeasy.util;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class ExactISIGenerator extends ISIGenerator {
+
+	private int index = 0;
+
+	public ExactISIGenerator(String mnDischargeFileName)
+			throws FileNotFoundException, IOException {
+		DoubleArrayList mnDischarges = new DoubleArrayList(mnDischargeFileName);
+		this.isiArray = calculateISI(mnDischarges);
+	}
+
+	public ExactISIGenerator(String triggerFileName, String mnDischargeFileName) {
+		DoubleArrayList triggers = new DoubleArrayList(triggerFileName);
+		DoubleArrayList mnDischarges = new DoubleArrayList(mnDischargeFileName);
+		DoubleArrayList prestimulusISIValues = new DoubleArrayList();
+		for (int i = 0; i < triggers.size(); i++) {
+			double trigger = triggers.get(i);
+			DoubleArrayList subList = mnDischarges.subList(trigger - 400,
+					trigger);
+			DoubleArrayList subListISIValues = ISIGenerator
+					.calculateInterspikeInterval(subList);
+			prestimulusISIValues.addAllOf(subListISIValues);
+		}
+		this.isiArray = prestimulusISIValues;
+		//
+		this.randomGen = RandomVariateGenFactory.getGenerator(isiArray);
+	}
+
+	@Override
+	public double nextInterspikeInterval() {		
+		//this.index = this.index % this.isiArray.size();
+		if (this.index == this.isiArray.size()) {
+			this.index = 0;//(int) (Math.random() * (this.isiArray.size() / 2));
+		}
+		return this.isiArray.get(this.index++);
+	}
+
+}

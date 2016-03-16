@@ -1,0 +1,12 @@
+package mimickit.util;
+
+import org.apache.log4j.Logger;
+
+public class SimulationLogger {
+	private static Logger logger = Logger.getLogger("Simulation");
+	
+	public static Logger getInstance() {
+		return logger;
+	}
+
+}
