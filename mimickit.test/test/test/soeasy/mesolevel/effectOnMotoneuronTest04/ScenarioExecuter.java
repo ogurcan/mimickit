@@ -1,6 +1,6 @@
 package test.soeasy.mesolevel.effectOnMotoneuronTest04;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 public class ScenarioExecuter extends AbstractScenarioExecuter {
 

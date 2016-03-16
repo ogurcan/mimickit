@@ -1,6 +1,6 @@
 package test.soeasy.microlevel.innervatedNeuron.nominal.innervationTest;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 public class ScenarioExecuter extends AbstractScenarioExecuter {
 

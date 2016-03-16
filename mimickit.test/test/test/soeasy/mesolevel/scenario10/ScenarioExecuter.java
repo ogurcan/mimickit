@@ -1,6 +1,6 @@
 package test.soeasy.mesolevel.scenario10;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 
 /**

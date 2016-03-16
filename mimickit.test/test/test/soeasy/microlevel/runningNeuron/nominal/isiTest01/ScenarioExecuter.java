@@ -1,6 +1,6 @@
 package test.soeasy.microlevel.runningNeuron.nominal.isiTest01;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 public class ScenarioExecuter extends AbstractScenarioExecuter {		
 

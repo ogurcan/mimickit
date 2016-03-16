@@ -16,7 +16,7 @@ import mimickit.util.Reflex;
 
 import org.junit.Ignore;
 
-import rast.AbstractTestAgent;
+import rast.core.AbstractTestAgent;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;

@@ -11,7 +11,7 @@ import mimickit.model.neuron.InnervatedNeuron;
 import mimickit.model.neuron.Neuron;
 import mimickit.model.neuron.RunningNeuron;
 import mimickit.model.neuron.SpikeObserver;
-import rast.AbstractTestAgent;
+import rast.core.AbstractTestAgent;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 

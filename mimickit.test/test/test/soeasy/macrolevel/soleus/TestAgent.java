@@ -14,7 +14,7 @@ import mimickit.model.neuron.Neuron;
 import mimickit.model.viewer.Viewer;
 import mimickit.util.DoubleArrayList;
 import mimickit.util.SimulationReport;
-import rast.AbstractTestAgent;
+import rast.core.AbstractTestAgent;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 

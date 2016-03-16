@@ -5,7 +5,7 @@ import mimickit.util.SimulationLogger;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.PatternLayout;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 
 /**

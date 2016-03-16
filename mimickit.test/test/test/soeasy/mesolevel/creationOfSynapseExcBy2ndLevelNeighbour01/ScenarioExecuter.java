@@ -1,6 +1,6 @@
 package test.soeasy.mesolevel.creationOfSynapseExcBy2ndLevelNeighbour01;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 
 /**

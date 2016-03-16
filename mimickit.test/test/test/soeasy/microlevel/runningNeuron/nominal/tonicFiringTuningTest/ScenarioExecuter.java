@@ -1,6 +1,6 @@
 package test.soeasy.microlevel.runningNeuron.nominal.tonicFiringTuningTest;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 
 /**

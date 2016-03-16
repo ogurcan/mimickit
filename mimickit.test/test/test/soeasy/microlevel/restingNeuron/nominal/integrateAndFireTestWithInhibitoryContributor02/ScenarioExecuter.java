@@ -1,5 +1,5 @@
 package test.soeasy.microlevel.restingNeuron.nominal.integrateAndFireTestWithInhibitoryContributor02;
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 public class ScenarioExecuter extends AbstractScenarioExecuter {
 	

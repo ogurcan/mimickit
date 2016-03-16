@@ -1,6 +1,6 @@
 package test.soeasy.mesolevel.creationOfSynapseInhBy3rdLevelNeighbour;
 
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 
 /**

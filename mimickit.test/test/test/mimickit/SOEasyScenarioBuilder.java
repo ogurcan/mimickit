@@ -1,7 +1,7 @@
 package test.mimickit;
 
 import mimickit.model.SOEASYEnvironment;
-import rast.RepastScenarioBuilder;
+import rast.core.RepastScenarioBuilder;
 
 abstract public class SOEasyScenarioBuilder extends RepastScenarioBuilder {
 

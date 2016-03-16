@@ -1,5 +1,5 @@
 package test.soeasy.microlevel.runningNeuron.nominal.conductExcitation;
-import rast.AbstractScenarioExecuter;
+import rast.core.AbstractScenarioExecuter;
 
 public class ScenarioExecuter extends AbstractScenarioExecuter {
 

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import mimickit.model.SOEASYEnvironment;
 import mimickit.model.neuron.InnervatedNeuron;
 import mimickit.model.neuron.Neuron;
-import rast.AbstractTestAgent;
+import rast.core.AbstractTestAgent;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 

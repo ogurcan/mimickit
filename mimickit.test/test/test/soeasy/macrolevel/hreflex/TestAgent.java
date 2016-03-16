@@ -9,7 +9,7 @@ import mimickit.model.Spike;
 import mimickit.model.neuron.Neuron;
 import mimickit.model.viewer.Viewer;
 import mimickit.util.DoubleArrayList;
-import rast.AbstractTestAgent;
+import rast.core.AbstractTestAgent;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;
