@@ -1,0 +1,102 @@
+package mimickit.gui;
+
+import java.awt.Color;
+
+import javax.swing.JFrame;
+
+import mimickit.SOEASYController;
+import mimickit.model.MNDischargeRates;
+import mimickit.util.CuSum;
+import mimickit.util.PeriStimulusTimeHistogram;
+
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+public class PSTHCUSUMPanel extends LineChartPanel {
+
+	private static final long serialVersionUID = 1L;
+
+	public static final int REFERENCE_MODE = 0;
+
+	public static final int SIMULATED_MODE = 1;
+
+	public static final int COMBINED_MODE = 2;
+
+	private int mode = 0; // default mode
+
+	public PSTHCUSUMPanel(JFrame parent, int mode) {
+		super(parent, "PSTH-CUSUM", "peristimulus time (ms)", "count", false);
+		this.mode = mode;
+
+		switch (mode) {
+		case REFERENCE_MODE:
+			setSeriesColor(0, Color.RED);
+			break;
+
+		case SIMULATED_MODE:
+			setSeriesColor(0, Color.BLUE);
+			break;
+
+		case COMBINED_MODE:
+			setSeriesColor(0, Color.RED);
+			setSeriesColor(1, Color.BLUE);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	public void update() {
+		if (mode == REFERENCE_MODE) {
+			CuSum referencePSTHCUSUM = SOEASYController.getInstance()
+					.getDataSet().getReferencePSTHCUSUM();
+			XYSeries cusumXYSeries = referencePSTHCUSUM.getCusumXYSeries()
+					.toXYSeries("PSTH-CUSUM");
+			XYSeriesCollection dataset = new XYSeriesCollection();
+			dataset.addSeries(cusumXYSeries);
+
+			updateDataset(dataset);
+		} else if (mode == SIMULATED_MODE) {
+			if (SOEASYController.getInstance().isSimulationRunning()) {
+				MNDischargeRates dataSet2 = SOEASYController.getInstance()
+						.getDataSet();
+				PeriStimulusTimeHistogram simulatedPSTH = dataSet2
+						.getSimulatedPSTH();
+				if (simulatedPSTH.getValueArray() != null) {
+					CuSum simulatedPSTHCUSUM = dataSet2.getSimulatedPSTHCUSUM();
+					XYSeries dischargeRates = simulatedPSTHCUSUM
+							.getCusumXYSeries().toXYSeries("");
+					XYSeriesCollection dataset = new XYSeriesCollection();
+					dataset.addSeries(dischargeRates);
+
+					updateDataset(dataset);
+				}
+			}
+		} else if (mode == COMBINED_MODE) {
+			CuSum referencePSTHCUSUM = SOEASYController.getInstance()
+					.getDataSet().getReferencePSTHCUSUM();
+			XYSeries cusumXYSeries = referencePSTHCUSUM.getCusumXYSeries()
+					.toXYSeries("PSTH-CUSUM");
+			XYSeriesCollection dataset = new XYSeriesCollection();
+			dataset.addSeries(cusumXYSeries);
+
+			if (SOEASYController.getInstance().isSimulationRunning()) {
+				MNDischargeRates dataSet2 = SOEASYController.getInstance()
+						.getDataSet();
+				PeriStimulusTimeHistogram simulatedPSTH = dataSet2
+						.getSimulatedPSTH();
+				if (simulatedPSTH.getValueArray() != null) {
+					CuSum simulatedPSTHCUSUM = dataSet2.getSimulatedPSTHCUSUM();
+					XYSeries dischargeRates = simulatedPSTHCUSUM
+							.getCusumXYSeries().toXYSeries("");
+					dataset.addSeries(dischargeRates);
+				}
+			}
+
+			updateDataset(dataset);
+		}
+
+	}
+
+}

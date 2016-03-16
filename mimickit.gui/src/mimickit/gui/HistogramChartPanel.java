@@ -1,0 +1,100 @@
+package mimickit.gui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.border.LineBorder;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.Range;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.ui.RectangleEdge;
+
+/**
+ * ChartPanel desgined for SO-EASY.
+ * 
+ * @author Gurcan
+ * 
+ */
+public class HistogramChartPanel extends org.jfree.chart.ChartPanel {
+
+	private static final long serialVersionUID = 1L;
+
+	private Font titleFont = new Font("Tahoma", Font.BOLD, 15);
+
+	private Shape shape = new Ellipse2D.Float(0.0f, 0.0f, 2.0f, 2.0f);
+
+	public HistogramChartPanel(JFrame parent, String title, String xAxisLabel,
+			String yAxisLabel, boolean legend) {
+		super(ChartFactory.createHistogram(title, xAxisLabel, yAxisLabel,
+				null, PlotOrientation.VERTICAL, legend, false, false));
+
+		setBorder(new LineBorder(Color.LIGHT_GRAY));
+
+		getChart().getTitle().setFont(titleFont);
+		getChart().setBackgroundPaint(parent.getBackground());
+
+		XYPlot xyPlot = (XYPlot) getChart().getPlot();
+		xyPlot.setBackgroundPaint(parent.getBackground());
+		xyPlot.setOutlinePaint(null);
+
+		xyPlot.getRenderer().setSeriesShape(0, shape);
+		
+		if (legend) {
+			getChart().getLegend().setPosition(RectangleEdge.TOP);
+			getChart().getLegend().setFrame(BlockBorder.NONE);
+			getChart().getLegend().setBackgroundPaint(parent.getBackground());
+		}
+	}	
+
+	public void updateDataset(XYDataset dataset) {
+		XYPlot xyPlot = (XYPlot) getChart().getPlot();
+
+		xyPlot.setDataset(dataset);
+	}
+	
+	public void saveChartAsPNG(File file, int width, int height) throws IOException {
+		JFreeChart chart = getChart();	
+		chart.setBackgroundPaint(Color.WHITE);
+		chart.getPlot().setBackgroundPaint(Color.WHITE);
+		ChartUtilities.saveChartAsPNG(file, chart, 613, 395);
+	}
+	
+	public void setSeriesColor(int series, Paint paint) {
+		XYPlot plot = (XYPlot) getChart().getPlot();
+		plot.getRenderer().setSeriesPaint(series, paint);
+	}
+	
+	public void setAutoRangeDomainAxis(boolean auto) {
+		XYPlot plot = (XYPlot) getChart().getPlot();
+		plot.getDomainAxis().setAutoRange(auto);
+	}
+	
+	public Range getRangeAxisRange() {
+		XYPlot plot = (XYPlot) getChart().getPlot();
+		return plot.getRangeAxis().getRange();
+	}
+	
+	public void setRangeAxisRange(Range range) {
+		XYPlot plot = (XYPlot) getChart().getPlot();
+		plot.getRangeAxis().setRange(range);
+	}
+	
+	public void configureDomainAxisRange(double lower, double upper) {
+		XYPlot plot = (XYPlot) getChart().getPlot();
+		plot.getDomainAxis().setRange(lower, upper);
+		plot.configureRangeAxes();
+	}
+
+}

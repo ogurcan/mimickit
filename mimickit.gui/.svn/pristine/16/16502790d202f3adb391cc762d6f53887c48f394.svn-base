@@ -1,0 +1,32 @@
+package soeasy.gui;
+
+import javax.swing.JFrame;
+
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import soeasy.SOEASYController;
+
+public class NeuronEvolutionPanel extends LineChartPanel {
+
+	private static final long serialVersionUID = -687012286034581722L;
+
+	public NeuronEvolutionPanel(JFrame parent) {
+		super(parent, "Neuron Evolution", "simulation time (ms)", "count", true);
+	}
+	
+	public void update() {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		//
+		XYSeries excitatoryNeuronsByTime = SOEASYController.getInstance()
+				.getExcitatoryNeuronEvolution();
+		dataset.addSeries(excitatoryNeuronsByTime);
+		//
+		XYSeries inhibitoryNeuronsByTime = SOEASYController.getInstance()
+				.getInhibitoryNeuronEvolution();
+		dataset.addSeries(inhibitoryNeuronsByTime);
+
+		updateDataset(dataset);
+	}
+
+}

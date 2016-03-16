@@ -1,0 +1,11 @@
+#Mon Mar 07 19:52:22 CET 2016
+helping_distance=4.0
+number_of_initial_sensory_neurons=1.0
+pathway_end=200.0
+reorganization_annoyance_level=20.0
+resting_ahp_level=0.10
+stimulus_occurance=1.0
+consecutive_stimulus_delay=25.0
+pathway_beginning=40.0
+derivative_fault_tolerance=0.50
+evolution_annoyance_level=40.0
