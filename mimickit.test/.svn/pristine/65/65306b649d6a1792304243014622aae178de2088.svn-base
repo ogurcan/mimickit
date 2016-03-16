@@ -1,0 +1,46 @@
+package test.soeasy.microlevel.innervatedNeuron.nominal.innervationTest;
+
+import soeasy.model.SOEASYEnvironment;
+import soeasy.model.neuron.InnervatedNeuron;
+import soeasy.model.neuron.RestingNeuron;
+import soeasy.model.neuron.RunningNeuron;
+import soeasy.model.viewer.ACExciteSensoryNeuronsRandomly;
+import soeasy.model.viewer.Viewer;
+import soeasy.util.DataFile;
+import soeasy.util.ISIGenerator;
+import test.soeasy.SOEasyScenarioBuilder;
+
+/**
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class ScenarioBuilder extends SOEasyScenarioBuilder {
+
+	@Override
+	protected void createAgents() {
+		try {
+			double axonalDelay = 17.5;
+
+			InnervatedNeuron sensoryNeuron = SOEASYEnvironment.getInstance().createInnervatedNeuron(null,
+					"SensoryNeuron", true, 10, axonalDelay, null);
+
+			ISIGenerator isiDistribution = new ISIGenerator(DataFile.EXP_MOTONEURON_ONLY);
+			RunningNeuron motorNeuron = SOEASYEnvironment.getInstance().createRunningNeuron(null,
+					"MotorNeuron", axonalDelay, isiDistribution, null);
+
+			RestingNeuron muscle = SOEASYEnvironment.getInstance().createMuscle();
+
+			sensoryNeuron.makeSynapseWith(motorNeuron);
+
+			motorNeuron.makeSynapseWith(muscle);				
+
+			Viewer viewer = SOEASYEnvironment.getInstance().createViewer(motorNeuron, muscle, null);
+			viewer.scheduleOneTimeAction(1000, 0,
+					new ACExciteSensoryNeuronsRandomly(viewer));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+}

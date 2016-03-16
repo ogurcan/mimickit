@@ -1,0 +1,34 @@
+package test.soeasy.mesolevel.effectOnMotoneuronTest04;
+
+import soeasy.model.SOEASYEnvironment;
+import soeasy.model.neuron.InnervatedNeuron;
+import soeasy.model.neuron.RunningNeuron;
+import soeasy.util.FixedISIGenerator;
+import soeasy.util.ISIGenerator;
+import test.soeasy.SOEasyScenarioBuilder;
+
+/**
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class ScenarioBuilder extends SOEasyScenarioBuilder {
+
+	@Override
+	protected void createAgents() {
+		try {
+			double axonalDelay = 1.0;
+
+			InnervatedNeuron sensoryNeuron = SOEASYEnvironment.getInstance().createInnervatedNeuron(null,
+					"AfferentNeuron", true, 40, axonalDelay, null);
+
+			ISIGenerator isiDistribution = new FixedISIGenerator(104);
+			RunningNeuron motorNeuron = SOEASYEnvironment.getInstance().createRunningNeuron(null,
+					"MotorNeuron", axonalDelay, isiDistribution, null);
+
+			sensoryNeuron.makeSynapseWith(motorNeuron);						
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}	
+}

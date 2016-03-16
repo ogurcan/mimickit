@@ -1,0 +1,42 @@
+package test.soeasy.mesolevel.compareEffectsOnMotoneuronWithVariableFrequency01;
+
+import soeasy.model.neuron.InnervatedNeuron;
+import soeasy.model.neuron.RunningNeuron;
+import soeasy.util.DataFile;
+import soeasy.util.ExactISIGenerator;
+import soeasy.util.ISIGenerator;
+import test.soeasy.SOEasyScenarioBuilder;
+
+/**
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class ScenarioBuilder extends SOEasyScenarioBuilder {
+
+	@Override
+	protected void createAgents() {
+		try {
+			double axonalDelay = 1.0;
+			ISIGenerator isiDistribution = new ExactISIGenerator(DataFile.EXP_MOTONEURON_ONLY);
+
+			InnervatedNeuron sensoryNeuron1 = getAgentFactory()
+					.createInnervatedNeuron(null, "AfferentNeuron1", true, 20,
+							axonalDelay, null);
+			RunningNeuron motorNeuron1 = getAgentFactory()
+					.createRunningNeuron(null, "MotorNeuron1", axonalDelay,
+							isiDistribution, null);
+			sensoryNeuron1.makeSynapseWith(motorNeuron1);
+			
+			InnervatedNeuron sensoryNeuron2 = getAgentFactory()
+					.createInnervatedNeuron(null, "AfferentNeuron2", true, 30,
+							axonalDelay, null);
+			RunningNeuron motorNeuron2 = getAgentFactory()
+					.createRunningNeuron(null, "MotorNeuron2", axonalDelay,
+							isiDistribution, null);
+			sensoryNeuron2.makeSynapseWith(motorNeuron2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

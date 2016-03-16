@@ -1,0 +1,8 @@
+<model name="SO-EASY">
+<classpath>
+<agents path="../../../../../../SO-EASY/bin" filter="soeasy.Neuron"/>
+<agents path="../../../../../../SO-EASY/bin" filter="soeasy.WiringViewer"/>
+<agents path="../../../../../../SO-EASY/bin" filter="soeasy.ExtracellularFluid"/>
+<agents path="../../../../../../SO-EASY/bin" filter="test.soeasy.mesolevel.creationOfSynapseExcBy2ndLevelNeighbour02.TestAgent"/>
+</classpath>
+</model>

@@ -1,0 +1,17 @@
+package test.soeasy;
+
+import rast.RepastScenarioBuilder;
+import soeasy.model.SOEASYEnvironment;
+
+abstract public class SOEasyScenarioBuilder extends RepastScenarioBuilder {
+
+	public SOEasyScenarioBuilder() {
+		super();
+		getAgentFactory().reset();
+	}
+	
+	protected SOEASYEnvironment getAgentFactory() {		
+		return SOEASYEnvironment.getInstance();
+	}	
+
+}

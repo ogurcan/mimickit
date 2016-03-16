@@ -1,0 +1,6 @@
+#Fri Aug 05 14:57:59 CEST 2011
+resting_ahp_level=0.15
+prediction_interval_pruning=0.50
+number_of_neurons=2
+trigger_data_file=./data/experimental/soleus/trigger.txt
+mndischarge_data_file=./data/experimental/soleus/motoneuron_discharge.txt

@@ -1,0 +1,34 @@
+package test.soeasy.microlevel.runningNeuron.nominal.isiTest03;
+
+import static soeasy.util.DataFile.EXP_MOTONEURON_ONLY;
+import soeasy.model.SOEASYEnvironment;
+import soeasy.model.neuron.Neuron;
+import soeasy.util.ExactISIGenerator;
+import soeasy.util.ISIGenerator;
+import test.soeasy.SOEasyScenarioBuilder;
+
+/**
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class ScenarioBuilder extends SOEasyScenarioBuilder {
+
+	@Override
+	protected void createAgents() {
+		try {
+			double axonalDelayMotorNeuron = 10.0;
+
+			ISIGenerator isiDistribution = new ExactISIGenerator(EXP_MOTONEURON_ONLY);
+			Neuron motorNeuron = SOEASYEnvironment.getInstance()
+					.createRunningNeuron(null, "Motoneuron",
+							axonalDelayMotorNeuron, isiDistribution, null);
+
+			Neuron muscle = SOEASYEnvironment.getInstance().createMuscle();
+
+			motorNeuron.makeSynapseWith(muscle);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

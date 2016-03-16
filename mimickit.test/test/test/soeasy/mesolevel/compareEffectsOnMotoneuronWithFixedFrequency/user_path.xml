@@ -1,0 +1,8 @@
+<model name="SO-EASY">
+<classpath>
+<agents path="../../../../../../SO-EASY/bin" filter="soeasy.model.Neuron"/>
+<agents path="../../../../../../SO-EASY/bin" filter="soeasy.model.WiringViewer"/>
+<agents path="../../../../../../SO-EASY/bin" filter="soeasy.model.ExtracellularFluid"/>
+<agents path="../../../../../../SO-EASY/bin" filter="test.soeasy.mesolevel.compareEffectsOnMotoneuronWithFixedFrequency.TestAgent"/>
+</classpath>
+</model>

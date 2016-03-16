@@ -1,0 +1,27 @@
+package test.soeasy.util;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import soeasy.util.Correlation;
+import soeasy.util.CuSum;
+import soeasy.util.DataFile;
+import soeasy.util.StaticPSF;
+
+public class CorrelationTest {
+
+	@Test
+	public void testCusumCorrelation() {
+		StaticPSF psf = new StaticPSF(
+				DataFile.EXP_SOLEUS_TRIGGER, DataFile.EXP_SOLEUS_MNDISCHARGE, false);
+		CuSum cusum = new CuSum(psf, 1, 4.0);
+		
+		double pearsonCorrelation = Correlation.getPearsonCorrelation(cusum, cusum, 0.0, 200.0);
+		assertEquals(1.0, pearsonCorrelation, 0.001);
+		
+		pearsonCorrelation = Correlation.getPearsonCorrelation(cusum, cusum, -400.0, 200.0);
+		assertEquals(1.0, pearsonCorrelation, 0.001);
+	}
+
+}

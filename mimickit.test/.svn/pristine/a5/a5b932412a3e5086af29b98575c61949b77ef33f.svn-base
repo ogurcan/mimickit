@@ -1,0 +1,257 @@
+package test.soeasy.util;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static soeasy.util.DataFile.EXP_SOLEUS_MNDISCHARGE;
+import static soeasy.util.DataFile.EXP_SOLEUS_TRIGGER;
+import static soeasy.util.DataFile.EXP_CV211_MNDISCHARGE;
+import static soeasy.util.DataFile.EXP_CV211_TRIGGER;
+import static soeasy.util.DataFile.EXP_CV221_MNDISCHARGE;
+import static soeasy.util.DataFile.EXP_CV221_TRIGGER;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import org.junit.Test;
+
+import soeasy.util.CuSum;
+import soeasy.util.DataFile;
+import soeasy.util.Event;
+import soeasy.util.ISIGenerator;
+import soeasy.util.StaticPSF;
+import soeasy.util.PeriStimulusTimeHistogram;
+import soeasy.util.Reflex;
+
+public class CuSumTest {
+
+	/**
+	 * Calculates and tests PSTH-CUSUM of a motor output spike train of a
+	 * motoneuron with external stimuli. Data are experimental. In this case, an
+	 * H-Reflex and 3 events (2 excitatory and 1 inhibitory) are expected since
+	 * there is sensory activity.
+	 */
+	@Test
+	public void calculateExperimentalPSTHCUSUMWithTrigger() {
+		// calculate expected events (excitations and inhibitions) using CuSum
+		PeriStimulusTimeHistogram spikeHistogram = new PeriStimulusTimeHistogram(
+				DataFile.TEST_STIMULI, DataFile.TEST_MOTOR_RESPONSE);
+		//
+		CuSum psthCUSUM = new CuSum(spikeHistogram, 1, 4.0);
+		psthCUSUM.toFile("./data/test/cusum_experimental.txt");
+
+		assertNotNull(psthCUSUM);
+
+		// in order a CuSum to be correct, the first and last CuSum
+		// (prestimulus), should be equal to 0.
+		assertEquals(0.0, psthCUSUM.getCuSumAt(-400.0), 0.01);
+		assertEquals(0.0, psthCUSUM.getCuSumAt(-0.01), 0.01);
+
+		// test mean
+		assertEquals(5.19, psthCUSUM.getPrestimulusMean(), 0.1);
+
+		// test error box
+		assertFalse(psthCUSUM.getErrorBoxUpperBound() == 1);
+		assertFalse(psthCUSUM.getErrorBoxUpperBound() == psthCUSUM
+				.getErrorBoxLowerBound());
+
+		double expectedMean = psthCUSUM.getPrestimulusMean();
+		double actualMean = (psthCUSUM.getErrorBoxLowerBound() + psthCUSUM
+				.getErrorBoxUpperBound()) / 2;
+		assertEquals(expectedMean, actualMean, 0.1);
+
+		List<Event> eventList = psthCUSUM.getEvents();
+		assertNotNull(eventList);
+		assertEquals(3, eventList.size());
+
+		Event event1 = eventList.get(0);
+		assertEquals(Event.EXCITATORY, event1.getType());
+		assertEquals(56.0, event1.getLatency(), 0.01);
+		assertEquals(22.0, event1.getDuration(), 0.01);
+
+		Event event2 = eventList.get(1);
+		assertEquals(Event.INHIBITORY, event2.getType());
+		assertEquals(78.0, event2.getLatency(), 0.01);
+		assertEquals(45.0, event2.getDuration(), 0.01);
+
+		Event event3 = eventList.get(2);
+		assertEquals(Event.EXCITATORY, event3.getType());
+		assertEquals(123.0, event3.getLatency(), 0.01);
+		assertEquals(72.0, event3.getDuration(), 0.01);
+	}
+
+	/**
+	 * Calculates and tests PSTH-CUSUM of a motor output spike train of a
+	 * motoneuron without any external stimuli. Data are experimental. In this
+	 * case, no H-Reflex and no events are expected since there is no sensory
+	 * activity.
+	 */
+	@Test
+	public void calculateExperimentalPSTHCUSUMWithoutTrigger() {
+		// calculate expected events (excitations and inhibitions) using CuSum
+		PeriStimulusTimeHistogram spikeHistogram = new PeriStimulusTimeHistogram(
+				DataFile.TEST_TRIGGER_FOR_MOTOR_UNIT,
+				DataFile.TEST_MOTOR_ACTIVITY);
+
+		Reflex hReflex = spikeHistogram.getHReflex();
+		assertNull(hReflex);
+		//
+		CuSum psthCUSUM = new CuSum(spikeHistogram, 1, 4.0);
+		psthCUSUM.toFile("./data/test/cusum_experimental_activity.txt");
+
+		assertNotNull(psthCUSUM);
+
+		assertEquals(0, psthCUSUM.getEvents().size());
+	}
+
+	/**
+	 * Calculates and tests PSTH-CUSUM of a motor output spike train of a
+	 * motoneuron without any external stimuli. Both data are created using
+	 * computer. In this case, no H-Reflex and no events are expected since
+	 * there is no sensory activity.
+	 */
+	@Test
+	public void calculateSimulatedpPSTHCUSUMWithoutTrigger() throws Exception {
+		String SIMULATED_MOTONEURON_ACTIVITY = "./data/test/simulated_motoneuron_activity.txt";
+		// initialize isi distribution class
+		ISIGenerator isiDistribution = new ISIGenerator(
+				DataFile.TEST_MOTOR_ACTIVITY);
+
+		// generate motor output spike train using ISIDistribution from 270 to
+		// 430.
+		FileWriter fileWriter = new FileWriter(SIMULATED_MOTONEURON_ACTIVITY);
+		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+		double time = 270 * 1000;
+		while ((time / 1000) < 430) {
+			double nextISI = isiDistribution.nextInterspikeInterval();
+			time += nextISI;
+			bufferedWriter.write((time / 1000) + "\n");
+		}
+		bufferedWriter.close();
+
+		// calculate expected events (excitations and inhibitions) using CuSum
+		PeriStimulusTimeHistogram spikeHistogram = new PeriStimulusTimeHistogram(
+				DataFile.TEST_TRIGGER_FOR_MOTOR_UNIT,
+				SIMULATED_MOTONEURON_ACTIVITY);
+
+		Reflex hReflex = spikeHistogram.getHReflex();
+		assertNull(hReflex);
+		//
+		CuSum psthCUSUM = new CuSum(spikeHistogram, 1, 4.0);
+
+		psthCUSUM.toFile("./data/test/cusumtest.txt");
+
+		assertNotNull(psthCUSUM);
+
+		assertEquals(0, psthCUSUM.getEvents().size());
+	}
+
+	/**
+	 * Calculates and tests PSF-CUSUM of a motor output spike train of a
+	 * motoneuron with external stimuli. Data are experimental. In this case, an
+	 * H-Reflex is expected since there is sensory activity.
+	 */
+	@Test
+	public void calculatePSFCUSUMWithTrigger() {
+		StaticPSF psf = new StaticPSF(
+				EXP_SOLEUS_TRIGGER, EXP_SOLEUS_MNDISCHARGE, false);
+		CuSum psfCUSUM = new CuSum(psf, 1, 4.0);
+		
+		// there must be a cusum value for each time (continuous)
+		for (double time = -400.0; time <= 200.0; time += 0.5) {
+			double cusum = psfCUSUM.getCuSumAt(time);
+			assertFalse(cusum == Double.NaN);
+		}
+		// in order a CuSum to be correct, the first and last CuSum
+		// (prestimulus), should be equal to 0.
+		assertEquals(0.0, psfCUSUM.getCuSumAt(-400.0), 0.0);
+		assertEquals(0.0, psfCUSUM.getCuSumAt(0.0), 0.0);
+
+		// test mean
+		assertEquals(7.719, psfCUSUM.getPrestimulusMean(), 0.1);
+	}
+	
+	@Test
+	public void calculatePSFCUSUMPrestimulusMean() {
+		StaticPSF psf = new StaticPSF(
+				EXP_CV211_TRIGGER, EXP_CV211_MNDISCHARGE, false);
+		CuSum psfCUSUM = new CuSum(psf, 1, 4.0);
+		assertEquals(10.4, psfCUSUM.getPrestimulusMean(), 0.1);
+		
+		psf = new StaticPSF(
+				EXP_CV221_TRIGGER, EXP_CV221_MNDISCHARGE, false);
+	    psfCUSUM = new CuSum(psf, 1, 4.0);
+		assertEquals(8.2, psfCUSUM.getPrestimulusMean(), 0.1);
+	}
+
+	@Test
+	public void toFile() throws IOException {
+		// calculate expected events (excitations and inhibitions) using CuSum
+		PeriStimulusTimeHistogram spikeHistogram = new PeriStimulusTimeHistogram(
+				DataFile.TEST_STIMULI, DataFile.TEST_MOTOR_RESPONSE);
+		//
+		CuSum psthCUSUM = new CuSum(spikeHistogram, 1, 4.0);
+
+		psthCUSUM.toFile("./data/test/test_cusum.txt");
+
+		File file = new File("./data/test/test_cusum.txt");
+		assertTrue(file.exists());
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		StringTokenizer tokenizer;
+		// in the first 3 lines, there must be one token
+		String firstLine = reader.readLine();
+		tokenizer = new StringTokenizer(firstLine);
+		assertEquals(1, tokenizer.countTokens());
+		//
+		String secondLine = reader.readLine();
+		tokenizer = new StringTokenizer(secondLine);
+		assertEquals(1, tokenizer.countTokens());
+		//
+		String thirdLine = reader.readLine();
+		tokenizer = new StringTokenizer(thirdLine);
+		assertEquals(1, tokenizer.countTokens());
+		//
+		// in the remaining lines, there must be two tokens
+		String remainingLine;
+		while ((remainingLine = reader.readLine()) != null) {
+			tokenizer = new StringTokenizer(remainingLine);
+			assertEquals(2, tokenizer.countTokens());
+		}
+		reader.close();
+	}
+
+	@Test
+	public void readFile() {
+		// create an empty CuSum
+		CuSum aCUSUM = new CuSum();
+
+		// test whether it is empty or not
+		assertEquals(0.0, aCUSUM.getPrestimulusMean());
+		assertEquals(0.0, aCUSUM.getErrorBoxLowerBound());
+		assertEquals(0.0, aCUSUM.getErrorBoxUpperBound());
+
+		// read a CuSum file
+		aCUSUM.readFile("./data/test/test_cusum.txt");
+
+		// test mean
+		assertEquals(5.19, aCUSUM.getPrestimulusMean(), 0.1);
+
+		// test error box
+		assertFalse(aCUSUM.getErrorBoxUpperBound() == 1);
+		assertFalse(aCUSUM.getErrorBoxUpperBound() == aCUSUM
+				.getErrorBoxLowerBound());
+
+		double expectedMean = aCUSUM.getPrestimulusMean();
+		double actualMean = (aCUSUM.getErrorBoxLowerBound() + aCUSUM
+				.getErrorBoxUpperBound()) / 2;
+		assertEquals(expectedMean, actualMean, 0.1);
+	}
+}

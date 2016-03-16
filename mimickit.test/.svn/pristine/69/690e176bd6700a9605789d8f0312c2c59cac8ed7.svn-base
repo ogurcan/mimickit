@@ -1,0 +1,103 @@
+package test.soeasy.mesolevel.nominalBehTest;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import rast.AbstractTestAgent;
+import repast.simphony.engine.schedule.ScheduleParameters;
+import repast.simphony.engine.schedule.ScheduledMethod;
+import soeasy.model.SOEASYEnvironment;
+import soeasy.model.SOEASYParameters;
+import soeasy.model.neuron.InnervatedNeuron;
+import soeasy.model.neuron.Neuron;
+import soeasy.model.neuron.RestingNeuron;
+import soeasy.model.neuron.SpikeObserver;
+import soeasy.util.DoubleArrayList;
+import soeasy.util.ISIGenerator;
+
+/**
+ * The aim of this test is three-fold: (1) to test the innervation of neurons in
+ * response to a stimulation, (2) to test the excitability of neurons in
+ * response to spikes coming from another neuron and (3) to test the integrate
+ * and fire model.
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class TestAgent extends AbstractTestAgent implements SpikeObserver {
+
+	// agents to be tested
+	private InnervatedNeuron neuron1;
+	private RestingNeuron neuron2;
+
+	// monitored data
+	private DoubleArrayList neuron1SpikeVector;
+	private DoubleArrayList neuron2SpikeVector;
+
+	/** INITIALIZATION METHODS **/
+
+	public TestAgent() {
+		SOEASYEnvironment agentFactory = SOEASYEnvironment.getInstance();
+		this.neuron1 = (InnervatedNeuron) agentFactory
+				.getAgent(ScenarioBuilder.NEURON_1);
+		this.neuron1.addSpikeObserver(this);
+		
+		this.neuron2 = (RestingNeuron) agentFactory
+				.getAgent(ScenarioBuilder.NEURON_2);
+		this.neuron2.addSpikeObserver(this);
+		
+		this.neuron1SpikeVector = new DoubleArrayList();
+		this.neuron2SpikeVector = new DoubleArrayList();
+	}
+
+	/** BEHAVIOR TRIGGERING METHODS **/
+
+	/**
+	 * At every 100 ms, excite neuron1
+	 */
+	@ScheduledMethod(start = 2, interval = 100, priority = ScheduleParameters.LAST_PRIORITY)
+	public void triggerExcitationOfNeuron1() {
+		neuron1.innervate();
+	}
+
+	/** TEST METHODS **/
+
+	/**
+	 * "Axon delay (10)" amount of ms after the first innervation of Neuron-1
+	 * (2), the spike reaches at Neuron-2, however it cannot be excited.
+	 */
+	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.LAST_PRIORITY)
+	public void testExcitabilityOfNeurons() {
+		double currentTick = SOEASYParameters.getInstance()
+				.getCurrentTick();
+		if (currentTick < 1000) {
+			assertEquals(neuron2SpikeVector.size(), 0);
+		}
+	}
+
+	/**
+	 * This method tests the spikes occured at neuron1 caused by external
+	 * innervation with an period of 100 ms. Theoretically, all the interspike
+	 * intervals of neuron1 should be 100 ms.
+	 */
+	@ScheduledMethod(start = 1000, interval = 0, priority = ScheduleParameters.LAST_PRIORITY)
+	public void testInnervationOfNeurons() {
+		assertTrue(neuron1SpikeVector.size() > 0);
+		// calculate interspike intervals
+		DoubleArrayList isiVector = ISIGenerator
+				.calculateInterspikeInterval(neuron1SpikeVector);
+		for (int i = 0; i < isiVector.size(); i++) {
+			Double isi = isiVector.get(i);
+			assertEquals(100.0, isi, 0.0);
+		}
+	}
+
+	@Override
+	public void update(Neuron spikingNeuron, double spikeTime) {
+		if (spikingNeuron.equals(neuron1)) {
+			this.neuron1SpikeVector.add(spikeTime);
+		} else if (spikingNeuron.equals(neuron2)) {
+			this.neuron2SpikeVector.add(spikeTime);
+		}
+	}
+
+}

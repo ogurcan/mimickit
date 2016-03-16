@@ -1,0 +1,29 @@
+package test.soeasy.mesolevel.nominalBehTest;
+
+import mimickit.model.neuron.InnervatedNeuron;
+import mimickit.model.neuron.RestingNeuron;
+import test.mimickit.SOEasyScenarioBuilder;
+
+/**
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class ScenarioBuilder extends SOEasyScenarioBuilder {
+
+	protected static String NEURON_1 = "Neuron-1";
+	protected static String NEURON_2 = "Neuron-2";
+
+	@Override
+	protected void createAgents() {
+		double axonalDelayNeuron1 = 10.0;
+		InnervatedNeuron neuron1 = getAgentFactory().createInnervatedNeuron(
+				null, NEURON_1, true, 1, axonalDelayNeuron1, null);
+
+		RestingNeuron neuron2 = getAgentFactory().createRestingNeuron(null,
+				NEURON_2, true, 1, 1.0, 1.0, null);
+
+		neuron1.makeSynapseWith(neuron2);
+	}
+
+}

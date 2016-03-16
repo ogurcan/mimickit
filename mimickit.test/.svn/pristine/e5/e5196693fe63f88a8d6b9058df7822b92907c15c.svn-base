@@ -1,0 +1,118 @@
+package test.soeasy.mesolevel.effectOnMotoneuronTest;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Ignore;
+
+import rast.AbstractTestAgent;
+import repast.simphony.engine.schedule.ScheduleParameters;
+import repast.simphony.engine.schedule.ScheduledMethod;
+import repast.simphony.engine.watcher.Watch;
+import repast.simphony.engine.watcher.WatcherTriggerSchedule;
+import soeasy.model.MNDischargeRates;
+import soeasy.model.SOEASYEnvironment;
+import soeasy.model.ExtracellularFluid;
+import soeasy.model.SOEASYParameters;
+import soeasy.model.Spike;
+import soeasy.model.neuron.InnervatedNeuron;
+import soeasy.model.neuron.Neuron;
+import soeasy.model.viewer.Viewer;
+import soeasy.util.DoubleArrayList;
+import soeasy.util.PeriStimulusTimeHistogram;
+import soeasy.util.Reflex;
+
+/**
+ * The aim of this test is three-fold: (1) to test the periodic innervation of
+ * sensory neuron via wiring viewer, (2) to test whether there is a blind time
+ * space in data caused by extracellular fluid or not, and (3) to test both the
+ * excitatory and inhibitory effect of sensory neuron on motor neuron by
+ * checking H-Reflex in PSTH.
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class TestAgent extends AbstractTestAgent {
+
+	private ExtracellularFluid extracellularFluid;
+
+	private InnervatedNeuron sensoryNeuron;
+
+	private Viewer wiringViewer;
+
+	private DoubleArrayList sensoryNeuronSpikeVector;
+
+	/** INITIALIZATION METHOD **/
+
+	public TestAgent() {
+		this.sensoryNeuron = (InnervatedNeuron) SOEASYEnvironment.getInstance()
+				.getAgent("SensoryNeuron");
+		this.wiringViewer = (Viewer) SOEASYEnvironment.getInstance().getAgent(
+				"WiringViewer");
+		this.extracellularFluid = (ExtracellularFluid) SOEASYEnvironment
+				.getInstance().getAgent("ExtracellularFluid");
+		//
+		this.sensoryNeuronSpikeVector = new DoubleArrayList();
+	}
+
+	/** STATE MONITORING METHODS **/
+
+	/**
+	 * Collects "potential" information from InterNeuron.
+	 */
+	@Watch(watcheeClassName = "soeasy.Neuron", watcheeFieldNames = "potential", query = "colocated", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	public void monitorSensoryNeuronResponses(Neuron watcheeNeuron) {
+		if (watcheeNeuron.equals(sensoryNeuron)) {
+			if (watcheeNeuron.getPotential() > Spike.FIRING_THRESHOLD) {
+				double currentTime = SOEASYParameters.getInstance()
+						.getCurrentTick();
+				if (sensoryNeuronSpikeVector.size() == 0) {
+					sensoryNeuronSpikeVector.add(currentTime);
+				} else {
+					double previousSpike = sensoryNeuronSpikeVector
+							.lastElement();
+					if ((currentTime - previousSpike) > Spike.SPIKE_DURATION) {
+						sensoryNeuronSpikeVector.add(currentTime);
+					}
+				}
+			}
+		}
+	}
+
+	/** TEST METHODS **/
+
+	// @ScheduledMethod(start = ScheduleParameters.END, interval = 0, priority =
+	// ScheduleParameters.LAST_PRIORITY)
+	@Ignore
+	public void testBlindTimeSpace() {
+		MNDischargeRates dataSet = SOEASYEnvironment.getInstance().getDataSet();
+		DoubleArrayList stimulationList = dataSet.getSimulatedTriggers(0);
+		DoubleArrayList motorResponseList = dataSet.getMNDischarges(0);
+		PeriStimulusTimeHistogram psth = new PeriStimulusTimeHistogram(
+				stimulationList, motorResponseList);
+		int stimulationTime = psth.getZeroIndex();
+		psth.getHistogram().view(800, 600);
+		// the first "duration of charge" amount of ms after stimulation
+		// must be 0 since it is impossible to make recordings.
+		for (int index = 1; index <= extracellularFluid.getChargeDuration(); index++) {
+			assertEquals(0, psth.getBinValue(stimulationTime + index));
+		}
+	}
+
+	@ScheduledMethod(start = ScheduleParameters.END, interval = 0, priority = ScheduleParameters.LAST_PRIORITY)
+	public void testExcitatoryEffectOfSensoryNeuronOnMotorNeuron() {
+		MNDischargeRates dataSet = SOEASYEnvironment.getInstance().getDataSet();
+		DoubleArrayList stimulationList = dataSet.getSimulatedTriggers(0);
+		DoubleArrayList motorResponseList = dataSet.getMNDischarges(0);
+		PeriStimulusTimeHistogram psth = new PeriStimulusTimeHistogram(
+				stimulationList, motorResponseList);
+		// psth.getHistogram().view(800, 500);
+
+		// PeriStimulusFrequencygram psf = new PeriStimulusFrequencygram(
+		// "./test/test/singlemotorunit/scenario03/data/simulated_trigger.txt",
+		// "./test/test/singlemotorunit/scenario03/data/simulated_motoneuron_discharge.txt");
+		// psf.getXYChart().view(800, 500);
+		Reflex hReflex = psth.getHReflex();
+		assertNotNull(hReflex);
+	}
+}

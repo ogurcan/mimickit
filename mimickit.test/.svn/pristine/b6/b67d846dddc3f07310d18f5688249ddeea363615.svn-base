@@ -1,0 +1,177 @@
+package test.soeasy.mesolevel.compareEffectsOnMotoneuronWithVariableFrequency02;
+
+import static org.junit.Assert.assertTrue;
+import repast.simphony.engine.schedule.ScheduleParameters;
+import repast.simphony.engine.schedule.ScheduledMethod;
+import soeasy.amas.Action;
+import soeasy.amas.CooperativeAgent;
+import soeasy.model.SOEASYEnvironment;
+import soeasy.model.SOEASYParameters;
+import soeasy.model.neuron.InnervatedNeuron;
+import soeasy.model.neuron.Neuron;
+import soeasy.model.neuron.RunningNeuron;
+import soeasy.model.neuron.SpikeObserver;
+import soeasy.util.DoubleArrayList;
+import test.soeasy.CooperativeTestAgent;
+
+/**
+ * 
+ * @author Önder Gürcan
+ * 
+ */
+public class TestAgent extends CooperativeTestAgent implements SpikeObserver {
+
+	private InnervatedNeuron afferentNeuron1, afferentNeuron2;
+
+	private RunningNeuron motorNeuron1, motorNeuron2;
+
+	private DoubleArrayList spikesOfAfferentNeuron1, spikesOfAfferentNeuron2;
+
+	private DoubleArrayList spikesOfMotorNeuron1, spikesOfMotorNeuron2;
+
+	private int stimulationCount;
+
+	/** INITIALIZATION METHOD **/
+
+	public TestAgent() {
+		SOEASYEnvironment agentFactory = SOEASYEnvironment.getInstance();
+		this.afferentNeuron1 = (InnervatedNeuron) agentFactory
+				.getAgent("AfferentNeuron1");
+		this.afferentNeuron1.addSpikeObserver(this);
+		
+		this.afferentNeuron2 = (InnervatedNeuron) agentFactory
+				.getAgent("AfferentNeuron2");
+		this.afferentNeuron2.addSpikeObserver(this);
+		
+		this.motorNeuron1 = (RunningNeuron) agentFactory
+				.getAgent("MotorNeuron1");
+		this.motorNeuron1.addSpikeObserver(this);
+		
+		this.motorNeuron2 = (RunningNeuron) agentFactory
+				.getAgent("MotorNeuron2");
+		this.motorNeuron2.addSpikeObserver(this);
+		
+		this.spikesOfAfferentNeuron1 = new DoubleArrayList();
+		this.spikesOfAfferentNeuron2 = new DoubleArrayList();
+		this.spikesOfMotorNeuron1 = new DoubleArrayList();
+		this.spikesOfMotorNeuron2 = new DoubleArrayList();
+		this.stimulationCount = 0;
+	}
+
+	@Override
+	public void update(Neuron spikingNeuron, double spikeTime) {
+		if (spikingNeuron.equals(afferentNeuron1)) {
+			this.spikesOfAfferentNeuron1.add(spikeTime);
+		} else if (spikingNeuron.equals(afferentNeuron2)) {
+			this.spikesOfAfferentNeuron2.add(spikeTime);
+		} if (spikingNeuron.equals(motorNeuron1)) {
+			this.spikesOfMotorNeuron1.add(spikeTime);
+		} else if (spikingNeuron.equals(motorNeuron2)) {
+			this.spikesOfMotorNeuron2.add(spikeTime);
+		}
+	}
+
+	/**
+	 * Stimulate the motoneuron at a time in-which you cannot excite.
+	 */
+	@ScheduledMethod(start = 1, interval = 0, priority = ScheduleParameters.FIRST_PRIORITY)
+	public void innervateAfferentNeurons() {
+		double currentTick = SOEASYParameters.getInstance()
+				.getCurrentTick();
+		// generate random stimulation between 1 second and 3 seconds.
+		int delayForNextStimulation = ((int) (Math.random() * 100)) + 10;
+		ACExciteAfferentNeuronsRandomly action = new ACExciteAfferentNeuronsRandomly(
+				this);
+		SOEASYParameters.schedule(
+				ScheduleParameters.createOneTime(currentTick
+						+ delayForNextStimulation, 0, 0), action);
+	}
+
+	/** TEST METHODS **/
+
+//	@ScheduledMethod(start = ScheduleParameters.END, interval = 0, priority = ScheduleParameters.LAST_PRIORITY)
+//	public void testInterspikeIntervals() {
+//		DoubleArrayList interspikeIntervals1 = ISIGenerator
+//				.calculateInterspikeInterval(spikesOfMotorNeuron1);
+//		interspikeIntervals1.sort();
+//		double minISI = interspikeIntervals1.get(0);
+//		double maxISI = interspikeIntervals1.lastElement();
+//		assertTrue(minISI >= 85);
+//		assertEquals(104.0, maxISI, 1.0);
+//		
+//		DoubleArrayList interspikeIntervals2 = ISIGenerator
+//				.calculateInterspikeInterval(spikesOfMotorNeuron2);
+//		interspikeIntervals2.sort();
+//		double minISI2 = interspikeIntervals2.get(0);
+//		double maxISI2 = interspikeIntervals2.lastElement();
+//		assertTrue(minISI2 >= 70);
+//		assertEquals(104.0, maxISI2, 1.0);
+//	}
+
+	@ScheduledMethod(start = ScheduleParameters.END, interval = 0, priority = ScheduleParameters.FIRST_PRIORITY)
+	public void printInfo() {
+		int advancedSpikeCount1 = 0;
+		double[] spikesOfAfferent1 = spikesOfAfferentNeuron1.elements();		
+		for (int i=0; i<spikesOfAfferent1.length; i++) {
+			double spike = spikesOfAfferent1[i];
+			if (spikesOfMotorNeuron1.contains(spike + 1.0)) {
+				advancedSpikeCount1++;
+			}
+		}
+		int totalSpikeCount1 = spikesOfMotorNeuron1.size();
+		double advancedISIRate1 = ((double) advancedSpikeCount1 / totalSpikeCount1) * 100;
+		double stimulationSuccessRate1 = ((double) advancedSpikeCount1 / stimulationCount) * 100;		
+		System.out.println("Advanced ISI rate 1: " + advancedISIRate1);
+		System.out.println("Stimulation success rate 1: " + stimulationSuccessRate1);
+		
+		int advancedSpikeCount2 = 0;
+		double[] spikesOfAfferent2 = spikesOfAfferentNeuron2.elements();		
+		for (int i=0; i<spikesOfAfferent2.length; i++) {
+			double spike = spikesOfAfferent2[i];
+			if (spikesOfMotorNeuron2.contains(spike + 1.0)) {
+				advancedSpikeCount2++;
+			}
+		}
+		int totalSpikeCount2 = spikesOfMotorNeuron2.size();
+		double advancedISIRate2 = ((double) advancedSpikeCount2 / totalSpikeCount2) * 100;
+		double stimulationSuccessRate2 = ((double) advancedSpikeCount2 / stimulationCount) * 100;		
+		System.out.println("\nAdvanced ISI rate 2: " + advancedISIRate2);
+		System.out.println("Stimulation success rate 2: " + stimulationSuccessRate2);
+		
+		assertTrue(advancedISIRate2 > advancedISIRate1);
+		assertTrue(stimulationSuccessRate2 > stimulationSuccessRate1);
+	}
+
+	/**
+	 * Excites (triggers) the sensory neuron randomly at every 1 to 100 time
+	 * steps. randomly.
+	 */
+	public class ACExciteAfferentNeuronsRandomly extends Action {
+
+		public ACExciteAfferentNeuronsRandomly(CooperativeAgent ownerAgent) {
+			super(ownerAgent);
+		}
+
+		@Override
+		public void execute() {
+			// excite the sensory neuron directly.
+			afferentNeuron1.innervate();
+			afferentNeuron2.innervate();
+			stimulationCount++;
+
+			// record given input signal for further comparison with outputs
+			double currentTime = SOEASYParameters.getInstance()
+					.getCurrentTick();
+
+			// generate random stimulation between 1 second and 3 seconds.
+			int delayForNextStimulation = ((int) (Math.random() * 100)) + 10;
+			ACExciteAfferentNeuronsRandomly action = new ACExciteAfferentNeuronsRandomly(
+					TestAgent.this);
+			SOEASYParameters.schedule(
+					ScheduleParameters.createOneTime(currentTime
+							+ delayForNextStimulation, 0, 0), action);
+		}
+
+	} // end of class of ACExciteSensoryNeuron
+
+}

@@ -1,0 +1,5 @@
+<model name="SO-EASY">
+<classpath>
+<agents path="../../../../../../../../SO-EASY/bin" filter="test.soeasy.microlevel.runningNeuron.nominal.tonicFiringTuningTest.TestAgent"/>
+</classpath>
+</model>

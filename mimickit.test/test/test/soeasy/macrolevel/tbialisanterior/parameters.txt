@@ -1,0 +1,6 @@
+#Fri Aug 05 14:57:59 CEST 2011
+resting_ahp_level=1.0
+prediction_interval_pruning=0.50
+number_of_neurons=2
+trigger_data_file=./data/experimental/tbialis_anterior/CV-2-1-1/Trigger.txt
+mndischarge_data_file=./data/experimental/tbialis_anterior/CV-2-1-1/MNDischarge.txt
