@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/contentpage.dwt.php" codeOutsideHTMLIsLocked="false" -->
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Single Motor Unit Simulation - Model Contents</title>
+<!-- InstanceEndEditable --><link href="gurcan.css" rel="stylesheet" type="text/css"/>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+window.document.write( '<style>body { height: '+(window.innerHeight+1)+'px; }</style>' );
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+//-->
+</script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+
+</head>
+
+<body>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr valign="top">
+		<td><img src="images/header.jpg" alt="Single Motor Unit Simulation" width="800" height="156" align="left"/></td>
+    </tr>
+</table>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0"class="bg3">
+  <tr>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+    <td height="20" colspan="3" align="left" valign="top"><!-- InstanceBeginEditable name="Breadcrumbs" -->
+      <p>Model Contents | </p>
+    <!-- InstanceEndEditable --></td>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+  </tr>
+   <tr>
+    <td width="36">&nbsp;</td>
+    <td height="20" colspan="3" align="left" valign="top">&nbsp;</td>
+  <td width="36">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td width="516" align="left" valign="top"><!-- InstanceBeginEditable name="EditRegion1" -->
+	    
+    <h1>Model Contents</h1>
+    <p align="justify">
+    This part of the documentation gives details on the model contents basically capturing all taken design decisions. 
+    It contains information on all relevant agents, their basic structure and behavior, environmental structure and dynamics.
+    </p>
+    <p align="justify">
+    In this page you will find a breif overview of model contents and their interactions. See <a href="./agents.html">Agents</a>, 
+    <a href="./environment.html">Environment</a>, <a href="./interaction.html">Interaction</a>
+	and <a href="./technical_details.html">Technical Details</a> for further detailed information.
+    </p>
+	
+	<p align="center">
+	<img src="./images/ClassDiagram.png" width="720" height="433" border="0" name="Single Motor Unit" alt="">
+    <br><br>
+    <font size=-1>Figure 3.1: Simulation model for Single Motor Unit</font>
+    </p>
+    
+    <p align="justify">
+    <myhead>Agents & Environment</myhead>
+    </p>
+    
+    <p align="justify">
+    Figure 3.1 shows the simulation model for Signel Motor Unit simulation project. Each neuron and the muscle are treated as excitable cells 
+    and modeled as agents. Axons are represented as connectors between neurons and excitable cells. Synapses are NOT modeled explicitly, 
+    instead for each synapse an axon is created between agents.
+    </p>
+    	
+    <p align="justify">
+    There are three types of neurons: <a href="./sensory_neuron_agent.html">Sensory Neuron</a>,
+    <a href="./inter_neuron_agent.html">Inter Neuron</a> and <a href="./motor_neuron_agent.html">Motor Neuron</a>. Although, in Figure 3.1 it is shown that
+    each neuron can connect to an excitable cell, it is not true in reality. Sensory Neurons make synapse with either Inter Neurons or Motor Neurons.
+    Inter Neurons make synapse with either other Inter Neurons or Motor Neurons.
+    Motor Neurons, on the other hand, make synapse with Muscles only. And, Muscles do not make synapses with non of the excitable cells.  
+	</p>	
+	<p align="justify">
+	Viewer agents enable interactions between functional agents and the system user by extracting comprehensible data (for analysis and display purposes) and injecting experimental data and constraints 
+	specified by this user. There are three viewer agents: <a href="./sensory_neuron_viewer_agent.html">Sensory Neuron Viewer</a>, <a href="./muscle_viewer_agent.html">Muscle Viewer</a>
+	and <a href="./wiring_viewer_agent.html">Wiring Viewer</a>. Sensory Neuron Viewer excites Sensory Neuron randomly and at the same time charges <a href="./environment.html">Extracellular Fluid</a>.
+	Extracellular Fluid remains charged for a while (2 ms) and then discharges. One important point here is that it is not possible to make recordings from non
+	of the functional elements while Extracellular Fluid is charged. Wiring Viewer is responsible for making assessments about the simulation model for detecting organizational non-cooperative
+	situations (NCS) and sending them to appropriate agents as feedbacks.
+	</p>
+	
+	<p align="justify">
+    <myhead>Interaction</myhead>
+    </p>
+	
+	<p align="justify">
+	To describe the basic interactions breifly, the basic flow of simulation runs will be explained.
+	</p>
+	
+	<p align="justify">
+	In the initialization phase, firstly basic elements are created and connected: a Sensory Neuron, a Motor Neuron,
+	a Muscle and viewer agents. Secondly, using experimental data the latency of H-Reflex is calculated and the axonal delay between Sensory Neuron and
+	Motor Neuron is set according to this calculated data. Upto know, there are no Inter Neurons. There is only one pathway composed of a Sensory Neuron and
+	a Motor Neuron.
+	</p>
+	<p align="justify">
+	Then the simulation run begins. At first tick (tick=1), WiringViewer uses experimental data to detect the characteristics of possible pathways to initialize
+	pathways. As a result of this process, it sends LackOfPathwayNCS feedbacks to Muscle agent. Muscle agent propagates this feedback to Motor Neuron agent.
+	When Motor Neuron receives such a NCS it creates an Inter Neuron between 
+	itself and Sensory Neuron. Motor Neuron then makes a little change in this NCS and backpropagates it to other agents through the biological neural network. Sensory Neuron does nothing when it receives such this NCS. However, 
+	when an Inter Neuron receives it, it creates another Inter Neuron between itself and Sensory Neuron. It then makes a little change in this NCS and 
+	backpropagates the NCS to other agents through the biological neural network. This process continues until this NCS is consumed.
+	</p>
+	<p align="justify">
+	After that, Sensory Neuron Viewer starts using an input spike pattern in the form of a uniform distribution on the interval [1, 3] ms spike trains,
+	where temporal structure and the amount of information is statistically	homogeneous across time, to excite Sensory Neuron. 
+	Sensory Neuron generates a spike as soon as it is excited and propagates this spike to its postsynaptic neurons. 
+	After that each neuron does the same thing until the spike reaches at Motor Neuron. 
+	Finally when the spike reaches at Muscle, Muscle Viewer detects this arrival and records its time of arrival. This whole process continues for
+	1.000.000 ticks (1000 s) repeatedly.   
+	</p>
+	<p align="justify">
+	After 1.000.000 ticks (1000 s), Wiring Viewer collects simulation data about the last 1.000.000 ticks from Sensory Neuron Viewer and Muscle Viewer.
+	Then it compares simulated data and experimental data to make an assessment. Wiring Viewer detects organizational non-cooperative stiuations
+	(such as InvalidHReflexNCS or LackOfPathwayNCS) if there are any and gives appropriate feedbacks to appropriate agents. 
+	Finally, the agents that receive these feedbacks execute their corresponding adaptive behaviors.
+	</p>
+	
+	<p align="justify">
+	When all NCSs are handled or partially handled, the simulation run continues for 1.000.000 more ticks. And another assessment will be done after this
+	1.000.000 ticks by Wiring Viewer. This cycle goes on until Wiring Viewer finds no organizational NCS. When Wiring Viewer detects no NCS, which means
+	that all assessments are passed, it ends the simulation run.  
+	</p>
+	
+	<br><br>                 
+
+    <!-- InstanceEndEditable --></td>
+  <td width="40" align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;"><img src="images/spacer.gif" alt="" width="40" height="20" align="top"/>    </td>
+  <td width="172" align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0" class="subnav">
+    <tr>
+      <td width="172" align="left"><ul class="subnav">
+          <li><a href="index.html">Model Metadata</a></li>
+		  <li><a href="short_model_description.html">Short Model Description</a></li>
+          <li><a href="model_contents.html">Model Contents</a></li>
+          <li><a href="expectations.html">Expectations on Model Input/Output Behaviour</a></li>
+          <li><a href="experimental_frame.html">Experimental Frame</a></li>
+          <li><a href="passed_test.html">Passed Tests</a></li>
+      </ul></td>
+    </tr>
+  </table>    
+<br>
+<br>
+  </td>
+  <td width="36" align="left" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+<td colspan="5">
+<hr align="center" width="100%" size="1" noshade="noshade"  /></td>
+</tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td height="60" colspan="3" align="left" valign="middle"><p>(c) 2010 Önder Gürcan | <a href="http://efe.ege.edu.tr/~ogurcan/contact.php">Contact me</a> </p></td>
+    <td width="36">&nbsp;</td>
+  </tr>
+</table>
+<img src="images/spacer.gif" alt="" width="40" height="1"/>
+</body>
+<!-- InstanceEnd --></html>

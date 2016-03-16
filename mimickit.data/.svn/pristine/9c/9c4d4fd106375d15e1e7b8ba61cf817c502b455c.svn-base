@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/contentpage.dwt.php" codeOutsideHTMLIsLocked="false" -->
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Single Motor Unit Simulation - Model Contents</title>
+<!-- InstanceEndEditable --><link href="gurcan.css" rel="stylesheet" type="text/css"/>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+window.document.write( '<style>body { height: '+(window.innerHeight+1)+'px; }</style>' );
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+//-->
+</script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+
+</head>
+
+<body>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr valign="top">
+		<td><img src="images/header.jpg" alt="Single Motor Unit Simulation" width="800" height="156" align="left"/></td>
+    </tr>
+</table>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0"class="bg3">
+  <tr>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+    <td height="20" colspan="3" align="left" valign="top"><!-- InstanceBeginEditable name="Breadcrumbs" -->
+      <p>Expectations on Model Input/Output Behaviour | </p>
+    <!-- InstanceEndEditable --></td>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+  </tr>
+   <tr>
+    <td width="36">&nbsp;</td>
+    <td height="20" colspan="3" align="left" valign="top">&nbsp;</td>
+  <td width="36">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td width="516" align="left" valign="top"><!-- InstanceBeginEditable name="EditRegion1" -->
+	    
+        <h1>Expectations on Model Input/Output Behaviour</h1>
+        <p align="justify">
+        The focus in this documentation block is to provide information on what can be expected model behavior in reaction to certain settings over time; 
+        basically this is a short description of model results. In order to undertsand what can be expected, first we need to know the pattern in the 
+        data that the original system produces. 
+        <p align="justify"><myhead>The Pattern in the Data that the Original System Produces</myhead></p>
+        </p>
+        <p align="justify">
+        Neuroscientists use spikes in order to understand the interconnection between interneurons. Because spikes are a very important way by which neurons in the CNS
+        carry information. Thus, neuroscientists working on single motor units usually activates the sensory neuron randomly (between 1 and 2 seconds) by electrical means 
+        and records the responses of the motoneurons from the muscle of the subject using a fine microelectrode while he/she contracts 
+        his/her muscle consciously. These experiments are used to study the electrical behaviour of neurons: to understand  the patterning of 
+        spikes in particular neurons.
+        </p>
+	
+		<p align="center">
+		<img src="./images/spiketimes.jpg" width="300" height="119" border="0" name="Interspike Interval" alt="">
+		<br><br>
+		<font size=-1>Figure 4.1: Schematic showing measurement of successive intervals (t1, t2, t3, etc.) 
+		between successive spikes of electrical activity recorded from a neuron.</font>
+		</p>
+		
+		<p align="justify">
+		When a subject contracts his/her muscle consciously, the motoneuron connected to that muscle starts generating spikes continuously (see Figure 4.1). 
+		However, the spike itself is an all-or-none phenomenon, so information is coded not in the amplitude of a spike but in the timing of spikes.
+		Accordingly, neuroscientists are interested in the patterning of spikes. 
+		One of the simplest ways to study the patterning of spike activity in a neuron is to construct an interspike interval histogram using recorded spikes. 
+		Interspike intervals (ISI) are the intervals between successive spikes (t1, t2, t3, t4 and t5 respectively in Figure 4.1). 
+		</p> 
+		
+		<p align="center">
+		<img src="./images/isi_diagrams.png" width="372" height="157" border="0" name="ISI Histogram" alt="">
+		<br><br>
+		<font size=-1>Figure 4.2: An example interspike interval (ISI) distribution histogram.</font>
+		</p>
+		
+		<p align="justify">
+		An interspike interval histogram is simply a plot of the distribution of the observed times between spikes (t1, t2, t3, etc) collected in ‘bins’ of fixed
+		width, say 1 ms (see Figure 4.2). Typically, such a histogram would be constructed from about 2000 such intervals; if a neuron is firing at an average rate of about 
+		5 spikes/s this will need a recording of 5-10 min of activity. Experiments show that neurons running at different frequencies represents different patterns. 
+		In order to generate realistic patterns for motoneurons we used statistical tecniques: (1) select an appropriate distribution, (2) find the right parameters by 
+		analyzing experimental data, (3) apply a "goodness of fit" test for validation of the found parameters and (4) use this distribution if the test succeeds or
+		try another distribution otherwise.
+		</p>
+		
+		<p align="center">
+		<img src="./images/spike_histogram.png" width="522" height="144" border="0" name="Spike Histogram" alt="">
+		<br><br>
+		<font size=-1>Figure 4.3: Generation of peristimulus time histograms. 
+		</font>
+		</p>
+		
+		<p align="justify">
+		Another way to study the patterning of spike activity in a single motor unit is to construct a peristimulus time histogram (PSTH). PSTH visualizes
+		the rate and timing of neuronal spike discharges in relation to an external stimulus or event. A PSTH is a histogram of the times at which neurons fire.
+		To make a PSTH, a spike train recorded from a single neuron is aligned with the onset, or a fixed phase point. The aligned sequences are superimposed 
+		in time, and then used to construct a histogram (see Figure 4.3).
+		</p>
+		
+		<p align="center">
+		<img src="./images/Peristimulus_Time_Histogram.png" width="600" height="375" border="0" name="Spike Histogram" alt="">
+		<br><br>
+		<font size=-1>Figure 4.4: Peristimulus time histogram (PSTH) in response to known synaptic potentials. 
+		In this PSTH, the fixed phasepoint is time 0. The PSTH shows the number of spikes 400 ms before and 200 ms after the stimuli.  
+		</font>
+		</p>
+		
+		<p align="justify">
+		The PSTH in Figure 4.4 shows two significant events due to peaks and troughs in the record, indicated with S and H 
+		because time 0 indicates the time of stimulation and the highest peak around 40 ms after stimulation has been interpreted as H-Reflex (S and H, 
+		respectively).
+		</p>
+		
+		<p align="center">
+		<img src="./images/PSTH-CUSUM.png" width="600" height="375" border="0" name="Spike Histogram" alt="">
+		<br><br>
+		<font size=-1>Figure 4.5: Peristimulus time histogram (PSTH) cumulative sum (CUSUM) from motoneuron responses to external stimuli.  
+		</font>
+		</p>
+		
+		<p align="justify">
+		One another visualization technique used by neuroscientists is cumulative sum (CUSUM). To reveal small effects, cumulative sums (CUSUM) of the changes 
+		in spike probability or rate are calculated (Figure 4.5). The CUSUM is calculated by subtracting the mean pre-stimulus baseline from 
+		the values in each bin and integrating the remainder; PSP-induced effects are considered significant if the post-stimulus CUSUM values 
+		exceed the maximum prestimulus CUSUM deviation from zero (i.e. the error box, indicated by the horizontal blue lines in 
+		Figure 6). The PSTH-CUSUM shows five significant events due to peaks and troughs in the record, indicated with E1, I1 and E2 because 
+		such significant changes in the CUSUM has often been interpreted as excitations and inhibitions (E and I, respectively). These CUSUM phases indicate 
+		that three separate pathways exist between the stimulated nerve and the motoneuron (E1, I1 and E2). 
+		</p>
+		
+		<p align="justify"><myhead>Expectations on Model I/O Behavior</myhead></p>
+		<br><br>
+	
+	<br><br>                 
+
+    <!-- InstanceEndEditable --></td>
+  <td width="40" align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;"><img src="images/spacer.gif" alt="" width="40" height="20" align="top"/>    </td>
+  <td width="172" align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0" class="subnav">
+    <tr>
+      <td width="172" align="left"><ul class="subnav">
+          <li><a href="index.html">Model Metadata</a></li>
+		  <li><a href="short_model_description.html">Short Model Description</a></li>
+          <li><a href="model_contents.html">Model Contents</a></li>
+     <li><a href="expectations.html">Expectations on Model Input/Output Behaviour</a></li>
+<li><a href="experimental_frame.html">Experimental Frame</a></li>
+             <li><a href="passed_test.html">Passed Tests</a></li>
+      </ul></td>
+    </tr>
+  </table>    
+<br>
+<br>
+  </td>
+  <td width="36" align="left" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+<td colspan="5">
+<hr align="center" width="100%" size="1" noshade="noshade"  /></td>
+</tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td height="60" colspan="3" align="left" valign="middle"><p>(c) 2010 Önder Gürcan | <a href="http://efe.ege.edu.tr/~ogurcan/contact.php">Contact me</a> </p></td>
+    <td width="36">&nbsp;</td>
+  </tr>
+</table>
+<img src="images/spacer.gif" alt="" width="40" height="1"/>
+</body>
+<!-- InstanceEnd --></html>

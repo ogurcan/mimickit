@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/contentpage.dwt.php" codeOutsideHTMLIsLocked="false" -->
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Single Motor Unit Simulation - Short Model Description</title>
+<!-- InstanceEndEditable --><link href="gurcan.css" rel="stylesheet" type="text/css"/>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+window.document.write( '<style>body { height: '+(window.innerHeight+1)+'px; }</style>' );
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+//-->
+</script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+
+</head>
+
+<body>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr valign="top">
+		<td><img src="images/header.jpg" alt="Single Motor Unit Simulation" width="800" height="156" align="left"/></td>
+    </tr>
+</table>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0"class="bg3">
+  <tr>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+    <td height="20" colspan="3" align="left" valign="top"><!-- InstanceBeginEditable name="Breadcrumbs" -->
+      <p>Short Model Description | </p>
+    <!-- InstanceEndEditable --></td>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+  </tr>
+   <tr>
+    <td width="36">&nbsp;</td>
+    <td height="20" colspan="3" align="left" valign="top">&nbsp;</td>
+  <td width="36">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td width="516" align="left" valign="top"><!-- InstanceBeginEditable name="EditRegion1" -->
+	    
+        <h1>Short Model Description</h1>
+        <h2>Content</h2>
+        <p align="justify"><myhead>Scope of the Model</myhead></p>
+        <p align="justify">        
+        A single motor unit is a single alpha-motor neuron and all of the corresponding muscle fibers it innervates; 
+        all of these fibers will be of the same type (either fast twitch or slow twitch). When a single motor unit is 
+        activated (via a sensory neuron), all of its fibers contract. Groups of motor units often work together to 
+        coordinate the contractions of a single muscle; all of the motor units that subserve a single muscle are considered 
+        a motor unit pool. However, motor unit pools are beyond the scope of this simulation model.
+        </p>
+        
+        <p align="center">
+	    <img src="./images/single_motor_unit.png" width="589" height="295" border="0" name="Single Motor Unit" alt="">
+    	<br><br>
+    	<font size=-1>Figure 2.1: The realistic model for single motor unit circuit</font>
+    	</p>
+                
+        <p align="justify">
+        Figure 2.1 represents a single motor unit model. It is composed of a sensory (afferent) neuron, 
+        a motor neuron, lots of interneurons (black ones), a muscle and the extracellular fluid that surronds the spaces 
+        around these neurons and the muscle. As can be seen from this figure, the sensory neuron and the motoneuron
+        makes only one synapse (monosynaptic). However, the network of interneurons is unknown (see question mark - ?). 
+        </p>
+        
+        <p align="justify"><myhead>What are the agents? How the environment is structured?</myhead></p>
+        <p align="center">
+	    <img src="./images/simulation_model.png" width="658" height="557" border="0" name="Single Motor Unit" alt="">
+        <br><br>
+        <font size=-1>Figure 2.2: Simulation model for Single Motor Unit</font>
+        </p>
+        <p align="justify">
+        There are broadly two categories of agents: functional agents and viewer agents.
+        </p>
+        <p align="justify">
+        Functional agents represent physical elements (neurons and muscles). Thus, each neuron and the muscle in the realistic model 
+        are treated as excitable cells and modeled as functional agents. In this sense, functional agents are: 
+        Sensory Neuron Agent, Inter Neuron Agent, Motor Neuron Agent and Muscle Agent (see Figure 2.2). Axons are represented as links
+	    between excitable cells. Synapses are not modeled explicitly, instead for each synapse an axon is created between agents and
+	    the transfer of neuronal signals are modelled as axonal delays for each axon. 
+	    </p>
+	    <p align="justify">
+	    Viewer agents enable interactions between functional agents and the system user by extracting comprehensible data (for analysis
+	    and display purposes) and injecting experimental data and constraints specified by this user. Viewer agents are in our simulation
+	    model are: Sensory Neuron Viewer Agent, Wiring Viewer Agent and Muscle Viewer Agent.
+	    </p>
+	    <p align="justify">
+	    The global aspects of the simulated environment are treated like a global environmental agent: Extracellular Fluid. 
+	    Since Extracellular Fluid is the fluid present in blood and in the spaces surrounding cells, it is naturally the physical
+	    environment for all above physical elements. The global aspects of the simulation environment, on the other hand, are 
+	    treated as Simulation Engine. 
+	    </p>
+        
+        <p align="justify"><myhead>Important assumptions</myhead></p>
+        <p align="justify">
+        One important assumption is that all interneurons have the same axonal delay and non of them is going up to cortex. 
+        </p>
+        
+        <p align="justify"><myhead>Aspects that were intentionally omitted</myhead></p>
+        <p align="justify">
+        One aspect that was intentionally omitted is that neurons do not have learning capabilities. They are only responsible for
+        propagating incoming spikes to their post-synaptic neurons. We also omit synapses in this model. Instead we use axons and axonal 
+        delays to represent the temporal relation between neurons. Each axon represent a synapse and more than one synapse is represented as
+        more than one axon.
+        </p>
+        
+        <h2>Functionality</h2>
+        <p align="justify"><myhead>What the model is able to achieve?</myhead></p>
+        <p align="justify">
+        One of the capabilities of the model is simulating a monosynaptic reflex pathway that generates an H-Reflex. In this sense,
+        the axonal delay of Sensory Neuron is tuned in response to feedbacks sent by Wiring Viewer.   
+		</p>
+		<p align="justify">
+        Another capability will be constructing a biological neural network from scratch that generates an excitation after the H-Reflex.
+        In this sense, a neural pathway will be created using self-organizing dynamics. The characteristics of this pathway will be 
+        provided by Wiring Viewer based on experimental data. <font color="red">However, the implementation of this capability is not finished yet.</font>
+		</p>
+		
+		<p align="justify"><myhead>How can it be used?</myhead></p>
+		<p align="justify">
+		The model can be used by just providing some single motor unit experimental data. These include:
+		   <ul>
+		      <li>(1) stimulation policy for sensory neuron, </li>
+		      <li>(2) experimental data to detect motoneuron discharge frequency (without external stimuli), and</li> 
+		      <li>(3) experimental motor response data from the muscle of the subject in response to external stimuli.</li>
+		   </ul>   
+		</p>
+		<br><br>                 
+
+    <!-- InstanceEndEditable --></td>
+  <td width="40" align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;"><img src="images/spacer.gif" alt="" width="40" height="20" align="top"/>    </td>
+  <td width="172" align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0" class="subnav">
+    <tr>
+      <td width="172" align="left"><ul class="subnav">
+          <li><a href="index.html">Model Metadata</a></li>
+		  <li><a href="short_model_description.html">Short Model Description</a></li>
+          <li><a href="model_contents.html">Model Contents</a></li>
+     <li><a href="expectations.html">Expectations on Model Input/Output Behaviour</a></li>
+<li><a href="experimental_frame.html">Experimental Frame</a></li>
+             <li><a href="passed_test.html">Passed Tests</a></li>
+      </ul></td>
+    </tr>
+  </table>    
+<br>
+<br>
+  </td>
+  <td width="36" align="left" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+<td colspan="5">
+<hr align="center" width="100%" size="1" noshade="noshade"  /></td>
+</tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td height="60" colspan="3" align="left" valign="middle"><p>(c) 2010 Önder Gürcan | <a href="http://efe.ege.edu.tr/~ogurcan/contact.php">Contact me</a> </p></td>
+    <td width="36">&nbsp;</td>
+  </tr>
+</table>
+<img src="images/spacer.gif" alt="" width="40" height="1"/>
+</body>
+<!-- InstanceEnd --></html>

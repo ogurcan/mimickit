@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/contentpage.dwt.php" codeOutsideHTMLIsLocked="false" -->
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Single Motor Unit Simulation - Model Contents</title>
+<!-- InstanceEndEditable --><link href="gurcan.css" rel="stylesheet" type="text/css"/>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+window.document.write( '<style>body { height: '+(window.innerHeight+1)+'px; }</style>' );
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+//-->
+</script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+
+</head>
+
+<body>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr valign="top">
+		<td><img src="images/header.jpg" alt="Single Motor Unit Simulation" width="800" height="156" align="left"/></td>
+    </tr>
+</table>
+<table width="1024" border="0" align="center" cellpadding="0" cellspacing="0"class="bg3">
+  <tr>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+    <td height="20" colspan="3" align="left" valign="top"><!-- InstanceBeginEditable name="Breadcrumbs" -->
+      <p>Experimental Frame | </p>
+    <!-- InstanceEndEditable --></td>
+    <td width="36"><img src="images/spacer.gif" alt="" width="30" height="1"/></td>
+  </tr>
+   <tr>
+    <td width="36">&nbsp;</td>
+    <td height="20" colspan="3" align="left" valign="top">&nbsp;</td>
+  <td width="36">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td width="516" align="left" valign="top"><!-- InstanceBeginEditable name="EditRegion1" -->
+	    
+        <h1>Experimental Frame</h1>
+        <h2>Experiment 1: Unsuccessfull Simulation of H-Reflex</h2>
+        <p align="justfiy">
+        <myhead>Focus: </myhead>Full Model Level
+        </p>
+	    <p align="justify">	   
+	    <myhead>Description: </myhead>
+	    The aim of this experiment is <b>to show that without feedbacks of Wiring Viewer,
+	    the simulation model is unable to generate an H-Reflex</b>.  
+	    The simulation is initiated with an excitatory sensory neuron, a motoneuron, a muscle. 
+	    Initially the axonal delay of sensory neuron and the motoneuron are both set to the half of the latency of the H-Reflex gathered from 
+	    experimental data. Then the simulation run begins and all agents start executing their nominal beviours. At every 1.000.000th tick, 
+	    Wiring Viewer analyzes the simulation data and checks whether an H-Reflex is occured or not by comparing simulated data to experimental
+	    data. There are three results that might be detected in this assessment: (1) Simulated H-Reflex does not exist, (2) Simulated H-Reflex 
+	    exists but is not acceptable and (3) Simulated H-Reflex exists and is acceptable.
+	    If the third result is detected it ends the simulation run, otherwise it sends suitable feedbacks to functional agents. 
+	    Any functional agent that recieves a feedback executes it's corresponding
+	    adaptive behavior. After all the feedbacks are consumed, the simulation run continuous until the next 1.000.000th tick. 
+	    The simulation runs until a certain amount of time (RunUntil) and ends at RunUntil if no H-Reflex is found.
+	    </p>
+	    
+	    <p align="justify">
+	    <myhead>Initial Configuration: </myhead><br><br>
+	    &nbsp&nbsp&nbsp <myhead>Parameter setting: </myhead><br>
+	    &nbsp&nbsp&nbsp SensoryNeuron.Type = EXCITATORY (default)<br>
+	    &nbsp&nbsp&nbsp WiringViewer.AssessmentLevel = <font color="red">INFO</font><br>
+	    &nbsp&nbsp&nbsp Simulation.RunUntil = 9.000.001<br><br>
+	    &nbsp&nbsp&nbsp <myhead>Inputs: </myhead><br>
+	    &nbsp&nbsp&nbsp 01_motor_response.txt
+	    </p>
+	    
+	    <p align="justify"><myhead>Output: </myhead>
+	    See <a href="./files/experiment_1_wv.txt">experiment_1_wv.txt</a> for an example simulation 
+	    run output of Wiring Viewer. In this example, Wiring Viewer could not detect a simulated H-Reflex until tick
+	    9.000.000.
+	    </p>
+	    
+	    <p align="justfiy"><myhead>Termination Conditions: </myhead>RunUntil = 9.000.0001 or H-Reflex is generated
+	    </p>	
+	    <br><br>
+	    
+    	<h2>Experiment 2: Successfull Simulation of H-Reflex</h2>
+        <p align="justify">
+        <myhead>Focus: </myhead>Full Model Level
+        </p>
+	    <p align="justify"><myhead>Description: </myhead>
+	    The aim of this case study is <b>to generate an H-Reflex in simulation</b>. 
+	    The simulation is initiated with an excitatory sensory neuron, a motoneuron, a muscle. 
+	    Initially the axonal delay of sensory neuron and the motoneuron are both set to the half of the latency of the H-Reflex gathered from 
+	    experimental data. Then the simulation run begins and all agents start executing their nominal beviours. At every 1.000.000th tick, 
+	    Wiring Viewer analyzes the simulation data and checks whether an H-Reflex is occured or not by comparing simulated data to experimental
+	    data. There are three results that might be detected in this assessment: (1) Simulated H-Reflex does not exist, (2) Simulated H-Reflex 
+	    exists but is not acceptable and (3) Simulated H-Reflex exists and is acceptable.
+	    If the third result is detected it ends the simulation run, otherwise it sends suitable feedbacks to functional agents. 
+	    Any functional agent that recieves a feedback executes it's corresponding
+	    adaptive behavior. After all the feedbacks are consumed, the simulation run continuous until the next 1.000.000th tick. 
+	    The simulation runs until a certain amount of time (RunUntil) and ends at RunUntil if no H-Reflex is found.
+	    </p> 
+	    
+	    <p align="justify">
+	    <myhead>Initial Configuration: </myhead><br><br>
+	    &nbsp&nbsp&nbsp <myhead>Parameter setting: </myhead><br>
+	    &nbsp&nbsp&nbsp SensoryNeuron.Type = EXCITATORY (default)<br>
+	    &nbsp&nbsp&nbsp WiringViewer.AssessmentLevel = FEEDBACK (default)<br>
+	    &nbsp&nbsp&nbsp Simulation.RunUntil = 9.000.001<br><br>
+	    &nbsp&nbsp&nbsp <myhead>Inputs: </myhead><br>
+	    &nbsp&nbsp&nbsp 01_motor_response.txt
+	    </p>
+	    
+	    <p align="justify"><myhead>Output: </myhead>
+	    See <a href="./files/experiment_2_wv.txt">experiment_2_wv.txt</a> for an example simulation 
+	    run output of Wiring Viewer. In this example, Wiring Viewer detects a simulated H-Reflex at tick
+	    8.000.000 and ends the simulation run. 
+	    </p>
+	    
+	    <p align="justify"><myhead>Termination Conditions: </myhead>RunUntil = 9.000.0001 or H-Reflex is generated
+	    </p>				
+	
+	<br><br>                 
+
+    <!-- InstanceEndEditable --></td>
+  <td width="40" align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;"><img src="images/spacer.gif" alt="" width="40" height="20" align="top"/>    </td>
+  <td width="172" align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0" class="subnav">
+    <tr>
+      <td width="172" align="left"><ul class="subnav">
+          <li><a href="index.html">Model Metadata</a></li>
+		  <li><a href="short_model_description.html">Short Model Description</a></li>
+          <li><a href="model_contents.html">Model Contents</a></li>
+     <li><a href="expectations.html">Expectations on Model Input/Output Behaviour</a></li>
+<li><a href="experimental_frame.html">Experimental Frame</a></li>
+             <li><a href="passed_test.html">Passed Tests</a></li>
+      </ul></td>
+    </tr>
+  </table>    
+<br>
+<br>
+  </td>
+  <td width="36" align="left" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top" style="background-image: url(images/homepage28.gif); background-repeat: repeat-y; background-position: center;">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+    <td align="left" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+<td colspan="5">
+<hr align="center" width="100%" size="1" noshade="noshade"  /></td>
+</tr>
+  <tr>
+    <td width="36">&nbsp;</td>
+    <td height="60" colspan="3" align="left" valign="middle"><p>(c) 2010 Önder Gürcan | <a href="http://efe.ege.edu.tr/~ogurcan/contact.php">Contact me</a> </p></td>
+    <td width="36">&nbsp;</td>
+  </tr>
+</table>
+<img src="images/spacer.gif" alt="" width="40" height="1"/>
+</body>
+<!-- InstanceEnd --></html>

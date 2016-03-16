@@ -1,0 +1,301 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-size: 90%;
+	background-color: #000000;
+	color: #FFFFFF;
+	text-align: center;
+	width: auto;
+	padding-bottom: 10px;
+}
+
+#headercontainer{
+}
+#headercontainer td{
+	color: #666666; 
+}
+#mainContent{
+	background-color: #000000;
+}
+
+
+
+p {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	color:#FFFFFF;
+
+
+}
+
+a {
+	color:#e5dd00;
+	text-decoration: underline;
+}
+
+a:hover {
+	color:#f7f95d;
+	text-decoration: underline;
+
+}
+
+li {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	color:#FFFFFF;
+}
+
+
+
+/** HEADINGS */
+
+h1 {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 140%;
+	color: #e5dd00;
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom-style: dotted;
+	border-bottom-color: #CCCCCC;
+	border-bottom-width: thin;
+	
+}
+
+h2 {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 130%;
+	color:#e5dd00;
+}
+
+h3 {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 110%;
+	color:#e5dd00;
+}
+
+h4 {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	color:#666;
+}
+
+h5 {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 85%;
+	color:#666;
+}
+	
+	
+hr{
+	border: 0;
+	border-bottom: 1px solid #cccccc;
+	height: 1px;
+	
+}
+
+myhead {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	color:#e5dd00;
+	font-weight: bold;	
+}
+
+
+			
+
+		
+/* FOOTER */
+
+
+#footer {
+	width: 800px;
+	height: 40px;
+	color: #fff;
+	padding: 10px 15px 15px 10px;
+	margin: 0px auto;
+	font-size: 80%;
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	
+}
+
+#footer a{
+	color: #fff;
+	text-decoration: none;
+}
+
+
+
+
+
+
+/* NAVIGATION */
+	
+.subnav {
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	width: 172px;
+	text-align: left;
+}
+
+.subnav li {
+	border-bottom: 1px solid #D3D9DB;
+	height: 60px;
+}
+
+.subnav a {
+	display: block;
+	
+	height: 18px;
+	padding: 7px 0px 0px 30px;
+	background:  url(images/arrow.png) no-repeat 4px 9px;
+	border-top: 1px solid #f7f95d;
+	border-bottom: 0px solid #f7f95d;
+	text-decoration: none;
+	color: #fff;
+}
+
+.subnav a:hover {
+	color: #f7f95d;
+	image: url(images/arrow-pink.gif) no-repeat;
+	text-decoration: underline;
+}
+
+
+		
+/** RIGHT NEWS BOX */
+
+.newsBox {
+	width: 172px;
+	padding: 5px 0px 0px 0px;
+	
+	
+}
+.newsBoxdate {
+	text-align: left;
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	color:#000;
+	font-weight: bold;	
+	padding: 5px 0px 0px 0px;
+}
+
+.newsHeadline {
+
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	color: #000;
+	text-align: left;
+		
+}
+	
+.homeImage {  
+	float: left;
+	padding: 0px 0px 20px 0px;
+}
+
+
+.image {  
+	float: right;
+	border: 1px solid #ccc;
+	margin: 0px 0px 10px 10px;
+}
+
+
+.cvheading{
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	color:#e5dd00;
+	font-size: 100%;
+	padding: 0px 0px 5px 0px;
+	font-weight: bold;
+	}
+	
+.grantTable{
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	color:#000000;
+	font-size: 100%;
+	align: left;
+
+
+	}
+.illustration_left {
+	margin-right: 1em;
+	margin-bottom: 0.5em;
+	border: 1px solid black;
+	float: left;
+}
+
+
+
+
+
+/* diary */
+
+.diary {
+}
+
+.diary .year {
+font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+font-size: 130%;
+  color: #FF89FC;
+}
+.diary .month {
+font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+  color: #0083FB;
+font-size: 120%;
+  padding: 10px;
+  background-color: #e5e5e5;
+  padding-right: 10px;
+width:500px;
+}
+.diary .location {
+font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+  font-style: italic;
+  color: #454545;
+  font-size: 100%;
+padding-left: 10px;
+}
+.diary .title {
+font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+ padding-left: 10px;
+}
+
+/* event */
+
+.navigation {
+  font-size: 11px;
+  width: 100%;
+}
+
+.navigation .previous {
+	text-align: left;
+}
+
+.navigation .next {
+	text-align: right;
+}
+
+.event {
+	margin-bottom: 10px;
+}
+
+.event .date {
+}
+
+.event .location {
+  font-style: italic;
+}
+
+.event .desc {
+font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  display: inline;
+}
+
+.event .links {
+font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  display: inline;
+}
+
+
+

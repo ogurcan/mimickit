@@ -1,0 +1,74 @@
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=1000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex does not exist.
+Detected NCS	: Lack of H-Reflex (LackOfHReflex).
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=2000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex exists but is not acceptable.
+Detected NCS	: Invalid H-Reflex (InvalidHReflex).
+Details		: Simulated H-Reflex occured at: 47.0, however, expected H-Reflex should at: (+/- 5) 37.0
+Feedback	: Sent to Sensory Neuron.
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=3000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex does not exist.
+Detected NCS	: Lack of H-Reflex (LackOfHReflex).
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=4000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex does not exist.
+Detected NCS	: Lack of H-Reflex (LackOfHReflex).
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=5000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex does not exist.
+Detected NCS	: Lack of H-Reflex (LackOfHReflex).
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=6000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex does not exist.
+Detected NCS	: Lack of H-Reflex (LackOfHReflex).
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=7000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex does not exist.
+Detected NCS	: Lack of H-Reflex (LackOfHReflex).
+
+Overall assessment result: FAIL.
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+SIMULATION MODEL ASSESSMENT at time=8000000.0
+-------------------------------------------------------------------------------------------------
+Assessment	: Existence of H-Reflex
+Result		: Simulated H-Reflex exists and is acceptable.
+
+Overall assessment result: SUCCESS.
+SIMULATION ENDED at: 8000000.0
+-------------------------------------------------------------------------------------------------
